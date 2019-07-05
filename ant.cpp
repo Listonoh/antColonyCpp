@@ -21,7 +21,7 @@ public:
   virtual bool addAdjPheromon(int vertex) = 0;
   virtual void updatePheromons() = 0;
 };
-
+ 
 
 class my_plane : plane{
   // vector<tuple<int, int, int>> edge;
@@ -50,17 +50,18 @@ public:
   void WA(){
     for( auto const& [key, val] : edges )
     {
-      std::cout << key << ':';
+      std::cout << key << ':  ';
       for( auto const& [a, b] : val ) {
-        cout << "to: " << a << ", val :" << b << "|";
-      }      // string's value
+        cout << "to: " << a << ", val :" << b << " | ";
+      }     
         cout << std::endl ;
     }
   };
 
 
   int getNextVertex(int vertex) override {
-    return 7;
+   int nPosib = edges[vertex].size();
+
   };
 
 
@@ -101,6 +102,7 @@ int main() {
   {
     mp->insEdge2(from, to, value);
   }
+  impu.colose();
   
   mp->WA();
   
