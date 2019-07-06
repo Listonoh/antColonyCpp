@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <set>
+#include <memory>
 
 using namespace std;
 
@@ -20,7 +22,8 @@ public:
 class my_plane : plane{
   // vector<tuple<int, int, int>> edge;
   map<int, vector<tuple<int, int>>> edges; //from , <to , value>
-  map<tuple<int, int> , int> pheromones;
+  map<tuple<int, int>, int> edgesValues;
+  map<tuple<int, int>, int> pheromones;
   // vector<int> vertex;
 
   vector<int> getAdjVal(int vertex){
@@ -34,8 +37,15 @@ public:
     edges = map<int, vector<tuple<int, int>>>();
   };
 
+  int getValue(int from, int to){
+    if(from > to){
+      to, from = from, to;
+    }
+    return edgesValues[make_tuple(from, to)];
+  }
+
   void updatePheromons(vector<int>& path){
-    cout << "updating pheromones \n"
+    cout << "updating pheromones \n";
   }
 
   void insEdge2(int from , int to, int value){
@@ -43,7 +53,8 @@ public:
     {
       edges[from].emplace_back(make_tuple(to, value));
       edges[to].emplace_back(make_tuple(from, value));
-
+      if(from > to) from, to = to, from;
+      edgesValues[make_tuple(from, to)] = value;
     }
   };
 
@@ -65,7 +76,14 @@ public:
   };
 
 
- 
+  set<int> getVertexes(){
+    set<int> ret;
+    for (auto const& [key, val] :edges)
+    {
+      ret.insert(key);
+    }
+    return ret;
+  }
 
   vector<int> getAdjPheromons(int vertex) override {
     return vector<int>();
@@ -89,12 +107,13 @@ class ant{
   vector<int> path;
 public: 
   virtual void moveNext() = 0;
-  virtual tuple<int, vector<int>> findPath() = 0;
+  virtual tuple<int, vector<int>> findPath(int from) = 0;
 };
 
 class AntTSP : ant{
   my_plane pl;
   public:
+
   AntTSP(my_plane& plan) {
     pl = plan;
   };
@@ -103,13 +122,45 @@ class AntTSP : ant{
 
   };
 
-  tuple<int, vector<int>> findPath() override {
-    
+  tuple<int, vector<int>> findPath(int from) override {
+    auto missingVertexes = pl.getVertexes();
+    int max = missingVertexes.size();
+    // unique_ptr<vector<int>> path (new vector<int>);
+    auto path = vector<int>();
+    int value = 0;
+    int location = from;
+    path.emplace_back(location);
+    cout << "count of vertexes: "<< missingVertexes.size() << "\n";
+    int timer = 0;
+
+    while(missingVertexes.size() != 0 && timer < max){
+      timer++;
+      int nextVertex = pl.getNextVertex(location);
+      value += pl.getValue(location, nextVertex);
+      path.emplace_back(nextVertex);
+      location = nextVertex;
+    }
+
+    while(location != from && timer < max){
+      timer++;
+      int nextVertex = pl.getNextVertex(location);
+      value += pl.getValue(location, nextVertex);
+      path.emplace_back(nextVertex);
+      location = nextVertex;
+    }
+
+    if (timer < max)
+    {
+      return make_tuple(value, path);
+    }
+    else{
+      return make_tuple(-1, vector<int>{});
+    }
 
     // auto a = {1,2,3};
-    auto a = vector<int>{1,2,3};
-    cout << a[2];
-    return make_tuple(1,a);
+    // auto& a = new vector<int>{1,2,3};
+    // cout << a[2];
+    // return make_tuple(1,a);
     // return make_tuple(1, make_vector(1,2,3));
   };
 };
@@ -118,10 +169,10 @@ bool isOptimal(int value, int iteration){
   return true;
 }
 
-vector<int> AntColonyTSP(my_plane& plan, int n = 20){
+vector<int> AntColonyTSP(my_plane& plan, int n = 20, int start = 0){
   auto ant1 = new AntTSP(plan);
   // tuple<int, vector<int>> bestResult = ant1->findPath();
-  auto bestResult = ant1->findPath();
+  auto bestResult = ant1->findPath(start);
   int iteration = 0;
 
   while (!isOptimal(get<0>(bestResult), iteration)){
@@ -129,7 +180,7 @@ vector<int> AntColonyTSP(my_plane& plan, int n = 20){
     for (size_t i = 0; i < n; i++){
       delete(ant1);
       ant1 = new AntTSP(plan);
-      auto result = ant1->findPath();
+      auto result = ant1->findPath(start);
       if (get<0>(result) <= get<0>(bestResult)) bestResult = result;
     }
     plan.updatePheromons(get<1>(bestResult));

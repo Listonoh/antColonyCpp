@@ -8,6 +8,9 @@
         "system_error": "cpp",
         "type_traits": "cpp",
         "tuple": "cpp",
-        "initializer_list": "cpp"
+        "initializer_list": "cpp",
+        "xtr1common": "cpp",
+        "vector": "cpp",
+        "memory": "cpp"
     }
 }
