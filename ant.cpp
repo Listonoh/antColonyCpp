@@ -125,6 +125,7 @@ class AntTSP : ant{
   tuple<int, vector<int>> findPath(int from) override {
     auto missingVertexes = pl.getVertexes();
     int max = missingVertexes.size();
+    cout << max << "\n";
     // unique_ptr<vector<int>> path (new vector<int>);
     auto path = vector<int>();
     int value = 0;
@@ -149,7 +150,8 @@ class AntTSP : ant{
       path.emplace_back(nextVertex);
       location = nextVertex;
     }
-
+    cout << timer << "\n";
+    cout << path.size() << ": size of path";
     if (timer < max)
     {
       return make_tuple(value, path);
@@ -193,7 +195,7 @@ vector<int> AntColonyTSP(my_plane& plan, int n = 20, int start = 0){
 int main() {
   string file = "g1.in";
 
-  auto mp = new my_plane();
+  auto mp = my_plane();
   ifstream inpu(file);
 
   if (!inpu)
@@ -206,12 +208,18 @@ int main() {
 
   while (inpu >> from >> to >> value)
   {
-    mp->insEdge2(from, to, value);
+    mp.insEdge2(from, to, value);
   }
   //impu.close();
-  mp->WA();
+  // mp->WA();
+  auto k = AntColonyTSP(mp, 10, 1);
+  cout << "final: " << k.size() << "\n";
+  // for (size_t i = 0; i < k.size(); i++)
+  // {
+  //   cout << k[i] << " ";
+  // }
   
 
-  
+  return 0;
   // cout << mp->getAdjVal(1)[0];
 }
