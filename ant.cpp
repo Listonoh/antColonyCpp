@@ -71,8 +71,8 @@ public:
 
 
   int getNextVertex(int vertex) override {
-   int nPosib = edges[vertex].size();
-
+    int nPosib = edges[vertex].size();
+    return get<0>(edges[vertex][rand() % nPosib]); 
   };
 
 
@@ -125,6 +125,7 @@ class AntTSP : ant{
   tuple<int, vector<int>> findPath(int from) override {
     auto missingVertexes = pl.getVertexes();
     int max = missingVertexes.size();
+    max *= 100;
     cout << max << "\n";
     // unique_ptr<vector<int>> path (new vector<int>);
     auto path = vector<int>();
@@ -188,6 +189,7 @@ vector<int> AntColonyTSP(my_plane& plan, int n = 20, int start = 0){
     }
     plan.updatePheromons(get<1>(bestResult));
   }
+  return get<1>(bestResult);
 }
 
 
