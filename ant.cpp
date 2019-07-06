@@ -5,6 +5,8 @@
 #include <map>
 #include <set>
 #include <memory>
+#include <cmath>
+#include <random>
 
 using namespace std;
 
@@ -23,7 +25,8 @@ class my_plane : plane{
   // vector<tuple<int, int, int>> edge;
   map<int, vector<tuple<int, int>>> edges; //from , <to , value>
   map<tuple<int, int>, int> edgesValues;
-  map<tuple<int, int>, int> pheromones;
+  std::default_random_engine re;
+  //double pheromones[];
   // vector<int> vertex;
 
   vector<int> getAdjVal(int vertex){
@@ -49,18 +52,17 @@ public:
   }
 
   void insEdge2(int from , int to, int value){
-    if (from != to)
-    {
+    if (from != to){
       edges[from].emplace_back(make_tuple(to, value));
       edges[to].emplace_back(make_tuple(from, value));
       if(from > to) from, to = to, from;
       edgesValues[make_tuple(from, to)] = value;
+      // pheromones[from][to] = 1;
     }
   };
 
   void WA(){
-    for( auto const& [key, val] : edges )
-    {
+    for( auto const& [key, val] : edges ){
       std::cout << key << ":  ";
       for( auto const& [a, b] : val ) {
         cout << "to: " << a << ", val :" << b << " | ";
@@ -72,7 +74,41 @@ public:
 
   int getNextVertex(int vertex) override {
     int nPosib = edges[vertex].size();
-    return get<0>(edges[vertex][rand() % nPosib]); 
+    double BETA = 1;
+    double ALPHA = 1;
+    double prob [nPosib]; 
+    double sigma = 0;
+    int i = 0;
+    for (auto const& [to, value] : edges[vertex]){
+      int a, b;
+      a, b = vertex, to;
+      if (vertex > to) a, b = to, vertex;
+      double ETAij = (double) pow ((double)1 / value, BETA);
+	    // double TAUij = (double) pow (pheromones[make_tuple(a,b)],   ALPHA);
+	    // double TAUij = (double) pow (pheromones[a][b],   ALPHA);
+	    double TAUij = 1;
+      cout << ETAij << "><" << TAUij << "!" << value << " |" ;
+      prob[i] = ETAij * TAUij;
+      sigma += prob[i];
+      i++;
+    }
+
+    double lower_bound = 0;
+    double upper_bound = sigma;
+    std::uniform_real_distribution<double> unif(lower_bound,upper_bound);
+
+    double a_random_double = unif(re);
+    cout << sigma << " " << a_random_double << " " << prob[i] << "\n";
+    for (size_t i = 0; i < nPosib; i++)
+    {
+      a_random_double -= prob[i];
+      if (a_random_double <= 0) {
+        cout << "selected: " << i << "|";
+        return get<0>(edges[vertex][i]);
+        };  
+    }
+    
+    return get<0>(edges[vertex][nPosib]); 
   };
 
 
@@ -125,7 +161,7 @@ class AntTSP : ant{
   tuple<int, vector<int>> findPath(int from) override {
     auto missingVertexes = pl.getVertexes();
     int max = missingVertexes.size();
-    max *= 100;
+    // max *= 100;
     cout << max << "\n";
     // unique_ptr<vector<int>> path (new vector<int>);
     auto path = vector<int>();
