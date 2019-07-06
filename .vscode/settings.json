@@ -1,11 +1,13 @@
 {
-    "C_Cpp.errorSquiggles": "Enabled",
+    "C_Cpp.errorSquiggles": "Disabled",
     "files.associations": {
         "iostream": "cpp",
         "istream": "cpp",
         "optional": "cpp",
         "ostream": "cpp",
         "system_error": "cpp",
-        "type_traits": "cpp"
+        "type_traits": "cpp",
+        "tuple": "cpp",
+        "initializer_list": "cpp"
     }
 }
