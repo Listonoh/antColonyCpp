@@ -141,6 +141,7 @@ class AntTSP : ant{
       location = nextVertex;
     }
 
+
     while(location != from && timer < max){
       timer++;
       int nextVertex = pl.getNextVertex(location);
