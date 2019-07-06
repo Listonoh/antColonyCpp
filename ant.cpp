@@ -139,6 +139,7 @@ class AntTSP : ant{
       timer++;
       int nextVertex = pl.getNextVertex(location);
       value += pl.getValue(location, nextVertex);
+      missingVertexes.erase(nextVertex);
       path.emplace_back(nextVertex);
       location = nextVertex;
     }
@@ -158,6 +159,7 @@ class AntTSP : ant{
       return make_tuple(value, path);
     }
     else{
+      return make_tuple(value, path);
       return make_tuple(-1, vector<int>{});
     }
 
@@ -216,10 +218,9 @@ int main() {
   // mp->WA();
   auto k = AntColonyTSP(mp, 10, 1);
   cout << "final: " << k.size() << "\n";
-  // for (size_t i = 0; i < k.size(); i++)
-  // {
-  //   cout << k[i] << " ";
-  // }
+  for (size_t i = 0; i < k.size(); i++){
+    cout << k[i] << " ";
+  }
   
 
   return 0;
