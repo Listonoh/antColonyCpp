@@ -87,7 +87,7 @@ public:
 	    // double TAUij = (double) pow (pheromones[make_tuple(a,b)],   ALPHA);
 	    // double TAUij = (double) pow (pheromones[a][b],   ALPHA);
 	    double TAUij = 1;
-      cout << ETAij << "><" << TAUij << "!" << value << " |" ;
+      // cout << ETAij << "><" << TAUij << "!" << value << " |" ;
       prob[i] = ETAij * TAUij;
       sigma += prob[i];
       i++;
@@ -98,12 +98,12 @@ public:
     std::uniform_real_distribution<double> unif(lower_bound,upper_bound);
 
     double a_random_double = unif(re);
-    cout << sigma << " " << a_random_double << " " << prob[i] << "\n";
+    // cout << sigma << " " << a_random_double << " " << prob[0] << "\n";
     for (size_t i = 0; i < nPosib; i++)
     {
       a_random_double -= prob[i];
       if (a_random_double <= 0) {
-        cout << "selected: " << i << "|";
+        // cout << "selected: " << i << "|";
         return get<0>(edges[vertex][i]);
         };  
     }
@@ -161,7 +161,7 @@ class AntTSP : ant{
   tuple<int, vector<int>> findPath(int from) override {
     auto missingVertexes = pl.getVertexes();
     int max = missingVertexes.size();
-    // max *= 100;
+    max *= 100;
     cout << max << "\n";
     // unique_ptr<vector<int>> path (new vector<int>);
     auto path = vector<int>();
