@@ -8,27 +8,25 @@
 #include <cmath>
 #include <random>
 #include <ctime>
+#include <climits>
 
 using namespace std;
 
 class plane{
 public:
   plane() {};
-  // virtual vector<int> getAdjVal(int vertex) = 0;
   virtual int getNextVertex(int vertex, set<int>& missingVert) = 0;
-  virtual vector<int> getAdjPheromons(int vertex) = 0;
-  virtual bool addAdjPheromon(int vertex) = 0;
   virtual void updatePheromons() = 0;
 };
  
 
 class my_plane : plane{
-  // vector<tuple<int, int, int>> edge;
   map<int, vector<tuple<int, int>>> edges; //from , <to , value>
   map<tuple<int, int>, int> edgesValues;
+  map<tuple<int, int>, int> pheromones;
   std::default_random_engine re;
-  //double pheromones[];
-  // vector<int> vertex;
+  double BETA = 1;
+  double ALPHA = 1;
 
   vector<int> getAdjVal(int vertex){
     auto k = vector<int>();
@@ -43,25 +41,47 @@ public:
 
   int getValue(int from, int to){
     if(from > to){
-      to, from = from, to;
+      int temp = to;
+      to = from;
+      from = temp;
     }
     return edgesValues[make_tuple(from, to)];
   }
 
+  int getPheromons(int from, int to){
+    if(from > to){
+      int temp = to;
+      to = from;
+      from = temp;
+    }
+    return pheromones[make_tuple(from, to)];
+  }
+
+  void updatePheromons() override {
+    //cout << "updating pheromones";
+  };
+
   void updatePheromons(vector<int>& path){
-    cout << "updating pheromones \n";
+    // cout << "updating pheromones \n";
   }
 
   void insEdge2(int from , int to, int value){
     if (from != to){
       edges[from].emplace_back(make_tuple(to, value));
       edges[to].emplace_back(make_tuple(from, value));
-      if(from > to) from, to = to, from;
-      edgesValues[make_tuple(from, to)] = value;
-      // pheromones[from][to] = 1;
+
+      if(from > to) {
+        int temp = from;
+        from = to;
+        to = temp;
+      };
+
+      edgesValues[make_tuple(from, to)] = value; // from < to 
+      pheromones[make_tuple(from, to)] = 1;
     }
   };
 
+  //write all
   void WA(){
     for( auto const& [key, val] : edges ){
       std::cout << key << ":  ";
@@ -76,42 +96,38 @@ public:
   int getNextVertex(int vertex, set<int>& missingVert) override {
     int nPosib = edges[vertex].size(); 
     int trgVert[nPosib];
-    double BETA = 1;
-    double ALPHA = 1;
     double prob [nPosib]; 
-    double sigma = 0;
-    int i = 0;
+    double sigma = 0; //all probabilties 
+    int i = 0; //counter
+
+    //initial search for posible edges 
     for (auto const& [to, value] : edges[vertex]){
+      //if is not in missing then skip him
       if (missingVert.find(to) == missingVert.end()){
         nPosib--;
         continue;
       }
-      int a, b;
-      a, b = vertex, to;
-      if (vertex > to) a, b = to, vertex;
+
+
       double ETAij = (double) pow ((double)1 / value, BETA);
-	    // double TAUij = (double) pow (pheromones[make_tuple(a,b)],   ALPHA);
-	    // double TAUij = (double) pow (pheromones[a][b],   ALPHA);
-	    double TAUij = 1;
-      // cout << ETAij << "><" << TAUij << "!" << value << " |" ;
+	    double TAUij = (double) pow (getPheromons(vertex,to),   ALPHA);
+
       prob[i] = ETAij * TAUij;
       trgVert[i] = to;
       sigma += prob[i];
       i++;
     }
 
+    //if no edge is selected we choose randomly from the rest
     if(sigma == 0){
-      cout << "n";
+      // cout << "n";
       i = 0;
       nPosib = edges[vertex].size();
       for (auto const& [to, value] : edges[vertex]){
-        int a, b;
-        a, b = vertex, to;
-        if (vertex > to) a, b = to, vertex;
+
         double ETAij = (double) pow ((double)1 / value, BETA);
-        // double TAUij = (double) pow (pheromones[make_tuple(a,b)],   ALPHA);
-        // double TAUij = (double) pow (pheromones[a][b],   ALPHA);
-        double TAUij = 1;
+        double TAUij = (double) pow (getPheromons(vertex,to),   ALPHA);
+
         // cout << ETAij << "><" << TAUij << "!" << value << " |" ;
         prob[i] = ETAij * TAUij;
         trgVert[i] = to;
@@ -120,23 +136,24 @@ public:
       }
     }
 
-    double lower_bound = 0;
     double upper_bound = sigma;
-    std::uniform_real_distribution<double> unif(lower_bound,upper_bound);
-    double b_random_double = (upper_bound) * ( (double)rand() / (double)RAND_MAX );
-    double a_random_double = unif(re);
-    a_random_double = b_random_double;
-    cout << sigma << " " << a_random_double << " " << prob[0] << " " << nPosib<< "\n";
+    // double lower_bound = 0;
+    // std::uniform_real_distribution<double> unif(lower_bound,upper_bound);
+    // double a_random_double = unif(re);
+    double a_random_double = (upper_bound) * ( (double)rand() / (double)RAND_MAX );
+
+    //cout << sigma << " " << a_random_double << " " << prob[0] << " " << nPosib << "\t";
     for (size_t i = 0; i < nPosib; i++)
     {
       a_random_double -= prob[i];
       if (a_random_double <= 0) {
-        cout << "selected: " << i << " from: " << nPosib <<  "|";
+        //cout << " selected: " << i << " from: " << nPosib <<  "\n";
         // return get<0>(edges[vertex][i]);
         return trgVert[i];
         };  
     }
     
+    //souldnt return here 
     return get<0>(edges[vertex][nPosib]); 
   };
 
@@ -150,19 +167,7 @@ public:
     return ret;
   }
 
-  vector<int> getAdjPheromons(int vertex) override {
-    return vector<int>();
-  };
-  
-  bool addAdjPheromon(int vertex) override{
-    return false;
 
-  };
-
-
-  void updatePheromons() override {
-
-  };
 
 };
 
@@ -171,7 +176,7 @@ public:
 class ant{ 
   vector<int> path;
 public: 
-  virtual tuple<int, vector<int>> findPath(int from) = 0;
+  virtual tuple<int, vector<int>> findPath() = 0;
 };
 
 class AntTSP : ant{
@@ -182,19 +187,26 @@ class AntTSP : ant{
     pl = plan;
   };
 
-  tuple<int, vector<int>> findPath(int from) override {
+  tuple<int, vector<int>> findPath() override {
     auto missingVertexes = pl.getVertexes();
     int max = missingVertexes.size();
-    max *= 4;
-    cout << max << "\n";
-    // unique_ptr<vector<int>> path (new vector<int>);
+    max *= 4; //it shouldnt be more then 2* but its "tree" and tree has n-1 edges
+
+    // cout << max << "\n";
+
+    int r = rand() % max;
+    auto from = *missingVertexes.begin();
     auto path = vector<int>();
-    int value = 0;
     int location = from;
     path.emplace_back(location);
-    cout << "count of vertexes: "<< missingVertexes.size() << "\n";
-    int timer = 0;
+    missingVertexes.erase(from);
 
+    // cout << "count of vertexes: "<< missingVertexes.size() << "\n";
+
+    int value = 0;
+    int timer = 0;
+    
+    // completing route/path
     while(missingVertexes.size() != 0 && timer < max){
       timer++;
       int nextVertex = pl.getNextVertex(location, missingVertexes);
@@ -204,6 +216,7 @@ class AntTSP : ant{
       location = nextVertex;
     }
 
+    // returning back home
     missingVertexes.insert(from);
     while(location != from && timer < max){
       timer++;
@@ -212,30 +225,50 @@ class AntTSP : ant{
       path.emplace_back(nextVertex);
       location = nextVertex;
     }
-    cout << timer << "\n";
-    cout << path.size() << ": size of path";
+
+
+    // cout << timer << "\n";
+    // cout << "size of path: " << path.size() << " value of path: " << value <<" \n" ;
     if (timer < max)
     {
       return make_tuple(value, path);
     }
     else{
-      return make_tuple(value, path);
-      return make_tuple(-1, vector<int>{});
+      // return make_tuple(value, path);
+      return make_tuple(INT_MAX, vector<int>{});
     }
   };
 };
 
 
 ///-------------------main
-
+int mValue = -1;
+int mCounter = 0;
 bool isOptimal(int value, int iteration){
-  return true;
+  if (mValue == -1) {
+    mValue = value;
+    return false;
+  }
+
+  if (mValue < value){
+    mCounter = 0;
+    mValue = value;
+    return false;
+  }
+
+  mCounter ++;
+  if (mCounter >= 20)
+  {
+    return true;
+  }
+  
+  return false;
 }
 
-vector<int> AntColonyTSP(my_plane& plan, int n = 20, int start = 0){
+tuple<int, vector<int>> AntColonyTSP(my_plane& plan, int n = 20){
   auto ant1 = new AntTSP(plan);
   // tuple<int, vector<int>> bestResult = ant1->findPath();
-  auto bestResult = ant1->findPath(start);
+  auto bestResult = ant1->findPath();
   int iteration = 0;
 
   while (!isOptimal(get<0>(bestResult), iteration)){
@@ -243,12 +276,12 @@ vector<int> AntColonyTSP(my_plane& plan, int n = 20, int start = 0){
     for (size_t i = 0; i < n; i++){
       delete(ant1);
       ant1 = new AntTSP(plan);
-      auto result = ant1->findPath(start);
+      auto result = ant1->findPath();
       if (get<0>(result) <= get<0>(bestResult)) bestResult = result;
     }
     plan.updatePheromons(get<1>(bestResult));
   }
-  return get<1>(bestResult);
+  return bestResult;
 }
 
 
@@ -273,8 +306,11 @@ int main() {
   }
   //impu.close();
   // mp->WA();
-  auto k = AntColonyTSP(mp, 10, 1);
-  cout << "final: " << k.size() << "\n";
+  auto tK = AntColonyTSP(mp, 10);
+  auto k = get<1>(tK);
+
+  cout << "final size: " << k.size() << "\n";
+  cout << "final value: " << get<0>(tK) << "\n";
   for (size_t i = 0; i < k.size(); i++){
     cout << k[i] << " ";
   }
