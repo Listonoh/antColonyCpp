@@ -132,6 +132,7 @@ public:
   
   int getNextVertex(int vertex, set<int>& missingVert) override {
     int nPosib = edges[vertex].size(); 
+    //cout << nPosib;
     int trgVert[nPosib];
     double prob [nPosib]; 
     double sigma = 0; //all probabilties 
@@ -174,6 +175,7 @@ public:
     }
 
     double upper_bound = sigma;
+    // cout << upper_bound << "\n" ;
     // double lower_bound = 0;
     // std::uniform_real_distribution<double> unif(lower_bound,upper_bound);
     // double a_random_double = unif(re);
@@ -186,6 +188,7 @@ public:
       if (a_random_double <= 0) {
         //cout << " selected: " << i << " from: " << nPosib <<  "\n";
         // return get<0>(edges[vertex][i]);
+        // cout << "returning :" <<  trgVert[i] << "\n";
         return trgVert[i];
         };  
     }
@@ -228,7 +231,6 @@ class AntTSP : ant{
     auto missingVertexes = pl.getVertexes();
     int max = missingVertexes.size();
     max *= 4; //it shouldnt be more then 2* but its "tree" and tree has n-1 edges
-
     // cout << max << "\n";
 
     int r = rand() % max;
@@ -238,7 +240,7 @@ class AntTSP : ant{
     path.emplace_back(location);
     missingVertexes.erase(from);
 
-    // cout << "count of vertexes: "<< missingVertexes.size() << "\n";
+    // cout << "\n count of vertexes: "<< missingVertexes.size() << "\n";
 
     int value = 0;
     int timer = 0;
@@ -246,6 +248,7 @@ class AntTSP : ant{
     // completing route/path
     while(missingVertexes.size() != 0 && timer < max){
       timer++;
+      // cout <<  " > "<<location << " " << missingVertexes.size() << "\n";
       int nextVertex = pl.getNextVertex(location, missingVertexes);
       value += pl.getValue(location, nextVertex);
       missingVertexes.erase(nextVertex);
@@ -272,7 +275,7 @@ class AntTSP : ant{
     }
     else{
       // return make_tuple(value, path);
-      return make_tuple(INT_MAX, vector<int>{});
+      return make_tuple(INT_MAX, vector<int>{1});
     }
   };
 };
@@ -294,7 +297,7 @@ bool isOptimal(int value, int iteration){
   }
 
   mCounter ++;
-  if (mCounter >= 20)
+  if (mCounter >= 2)
   {
     return true;
   }
@@ -305,11 +308,14 @@ bool isOptimal(int value, int iteration){
 tuple<int, vector<int>> AntColonyTSP(my_plane& plan, int n = 20){
   auto ant1 = new AntTSP(plan);
   // tuple<int, vector<int>> bestResult = ant1->findPath();
+  //cout << "pre findpath";
   auto bestResult = ant1->findPath();
+  //cout << "path found";
   int iteration = 0;
 
   while (!isOptimal(get<0>(bestResult), iteration)){
     iteration ++;
+    //cout << iteration;
     for (size_t i = 0; i < n; i++){
       delete(ant1);
       ant1 = new AntTSP(plan);
@@ -324,17 +330,18 @@ tuple<int, vector<int>> AntColonyTSP(my_plane& plan, int n = 20){
 
 
 int main(int argc, char* argv[]) {
+  cout << "opened";
   std::srand(std::time(nullptr));
   auto mp = my_plane();
 
-  if (argc < 2){
-    cout << "usage: please write input file \n" 
-    << "example: '" << argv[0] << "' a.in" << "\n"; 
-    return 1;
-  }
+  // if (argc < 2){
+  //   cout << "usage: please write input file \n" 
+  //   << "example: '" << argv[0] << "' a.in" << "\n"; 
+  //   return 1;
+  // }
   
-  string file = argv[1];
-
+  // string file = argv[1];
+  string file = "facebook.txt";
   ifstream inpu(file);
 
   if (!inpu)
@@ -350,8 +357,10 @@ int main(int argc, char* argv[]) {
     mp.insEdge2(from, to, value);
   }
   //impu.close();
-  // mp->WA();
-  auto tK = AntColonyTSP(mp, 10);
+  //mp.WA();
+  cout << "presolving ";
+  auto tK = AntColonyTSP(mp, 5);
+  cout << "aftersolving ";
   auto k = get<1>(tK);
 
   cout << "final size: " << k.size() << "\n";
