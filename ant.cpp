@@ -7,6 +7,7 @@
 #include <memory>
 #include <cmath>
 #include <random>
+#include <ctime>
 
 using namespace std;
 
@@ -71,9 +72,9 @@ public:
     }
   };
 
-
+  
   int getNextVertex(int vertex, set<int>& missingVert) override {
-    int nPosib = edges[vertex].size();
+    int nPosib = edges[vertex].size(); 
     int trgVert[nPosib];
     double BETA = 1;
     double ALPHA = 1;
@@ -122,8 +123,9 @@ public:
     double lower_bound = 0;
     double upper_bound = sigma;
     std::uniform_real_distribution<double> unif(lower_bound,upper_bound);
-
+    double b_random_double = (upper_bound) * ( (double)rand() / (double)RAND_MAX );
     double a_random_double = unif(re);
+    a_random_double = b_random_double;
     cout << sigma << " " << a_random_double << " " << prob[0] << " " << nPosib<< "\n";
     for (size_t i = 0; i < nPosib; i++)
     {
@@ -169,7 +171,6 @@ public:
 class ant{ 
   vector<int> path;
 public: 
-  virtual void moveNext() = 0;
   virtual tuple<int, vector<int>> findPath(int from) = 0;
 };
 
@@ -179,10 +180,6 @@ class AntTSP : ant{
 
   AntTSP(my_plane& plan) {
     pl = plan;
-  };
-
-  void moveNext() override {
-
   };
 
   tuple<int, vector<int>> findPath(int from) override {
@@ -258,7 +255,7 @@ vector<int> AntColonyTSP(my_plane& plan, int n = 20, int start = 0){
 
 int main() {
   string file = "g1.in";
-
+  std::srand(std::time(nullptr));
   auto mp = my_plane();
   ifstream inpu(file);
 
