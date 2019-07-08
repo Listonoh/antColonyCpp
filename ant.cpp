@@ -16,14 +16,14 @@ class plane{
 public:
   plane() {};
   virtual int getNextVertex(int vertex, set<int>& missingVert) = 0;
-  virtual void updatePheromons() = 0;
+  virtual void updatePheromons(vector<int>& path) = 0;
 };
  
 
 class my_plane : plane{
   map<int, vector<tuple<int, int>>> edges; //from , <to , value>
   map<tuple<int, int>, int> edgesValues;
-  map<tuple<int, int>, int> pheromones;
+  map<tuple<int, int>, double> pheromones;
   std::default_random_engine re;
   double BETA = 1;
   double ALPHA = 1;
@@ -48,7 +48,7 @@ public:
     return edgesValues[make_tuple(from, to)];
   }
 
-  int getPheromons(int from, int to){
+  double getPheromons(int from, int to){
     if(from > to){
       int temp = to;
       to = from;
@@ -57,12 +57,49 @@ public:
     return pheromones[make_tuple(from, to)];
   }
 
-  void updatePheromons() override {
-    //cout << "updating pheromones";
-  };
+  void setPheromons(int from, int to, double value){
+    if(from > to){
+      int temp = to;
+      to = from;
+      from = temp;
+    }
+    pheromones[make_tuple(from, to)] = value;
+  }
 
-  void updatePheromons(vector<int>& path){
-    // cout << "updating pheromones \n";
+  void updatePheromons(vector<int>& path) override{
+    set<tuple<int,int>> mSet;
+    double Ro = 0.01; //evaporating coeficient
+    double Q = 2; //coeficient for increasing pheromons
+    //filing path
+
+    int b, a = path[0];
+    tuple<int, int> ins;
+    for (size_t i = 1; i < path.size(); i++)
+    {
+      b = path[i];
+      if (a > b){
+        ins = make_tuple(b, a);
+      }
+      else{
+        ins = make_tuple(a, b);
+      }
+
+      mSet.insert(ins);
+      a = b;
+    }
+    
+    //evaporating of pheromones
+    for (auto & [_, valPhero] : pheromones){
+      valPhero *= (1-Ro);
+    }
+    // cout << pheromones[ins] << " this is it \n"; // it works :)
+
+    //increasing pheromones based on path
+    std::set<tuple<int,int>>::iterator it = mSet.begin();
+    while (it != mSet.end()){
+        pheromones[*it] += Q / edgesValues[*it];
+        it++;
+    }
   }
 
   void insEdge2(int from , int to, int value){
@@ -286,16 +323,24 @@ tuple<int, vector<int>> AntColonyTSP(my_plane& plan, int n = 20){
 
 
 
-int main() {
-  string file = "g1.in";
+int main(int argc, char* argv[]) {
   std::srand(std::time(nullptr));
   auto mp = my_plane();
+
+  if (argc < 2){
+    cout << "usage: please write input file \n" 
+    << "example: '" << argv[0] << "' a.in" << "\n"; 
+    return 1;
+  }
+  
+  string file = argv[1];
+
   ifstream inpu(file);
 
   if (!inpu)
   { 
     cout << "unable to open file";
-    return -1;
+    return 1;
   }
   
   int from, to, value;

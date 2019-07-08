@@ -46,6 +46,8 @@
         "xstddef": "cpp",
         "xstring": "cpp",
         "xtree": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "*.tcc": "cpp",
+        "unordered_map": "cpp"
     }
 }
