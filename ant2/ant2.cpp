@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
@@ -17,7 +17,7 @@ using namespace std;
 
 int mValue = -1;
 int mCounter = 0;
-bool isOptimal(int value, int iteration, int max_iteration ) {
+bool isOptimal(int value, int iteration, int max_iteration) {
 	if (iteration > max_iteration)
 	{
 		return true;
@@ -42,7 +42,7 @@ bool isOptimal(int value, int iteration, int max_iteration ) {
 	return false;
 }
 
-tuple<int, vector<int>> AntColonyTSP(my_plane* plan,  int max_iteration, double rho, double Q, int n = 20) {
+tuple<int, vector<int>> AntColonyTSP(my_plane* plan, int max_iteration, double rho, double Q, int n = 20) {
 	auto ant1 = new Ant(plan);
 	auto bestResult = ant1->findPath();
 	int iteration = 0;
@@ -65,17 +65,17 @@ tuple<int, vector<int>> AntColonyTSP(my_plane* plan,  int max_iteration, double 
 int main(int argc, char* argv[]) {
 	std::srand((int)std::time(nullptr)); // new random
 
-	if (argc < 2){
-	  cout << "usage: please write input file \n" 
-	  << "example: '" << argv[0] << "' a.in" << "\n"; 
-	  return 1;
+	if (argc < 2) {
+		cout << "usage: please write input file \n"
+			<< "example: '" << argv[0] << "' a.in" << "\n";
+		return 1;
 	}
 
 	double alfa = 1; double beta = 1; double rho = 0.01; double Q = 2; int max = 100;
 
 	cout << "ok" << argc;
 	int index = 2;
-	while (index+1 < argc)
+	while (index + 1 < argc)
 	{
 		string arg_name = argv[index];
 		string arg_value = argv[index + 1];
@@ -151,9 +151,9 @@ int main(int argc, char* argv[]) {
 		cout << "Unable to open file: " << file;
 		return 1;
 	}
-	
+
 	auto mp = new my_plane(alfa, beta);
-	
+
 	int from, to, value;
 
 	while (inpu >> from >> to >> value)
