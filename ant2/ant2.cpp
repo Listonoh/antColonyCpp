@@ -57,7 +57,7 @@ tuple<int, vector<int>> AntColonyTSP(my_plane* plan, int max_iteration, double r
 	return bestResult;
 }
 
-double TryParseStringToDouble(const string input, const double base, string arg_name) {
+double TryParseStringToDouble(const string input, const double base, const string arg_name) {
 	try{
 		return stod(input);
 	}
