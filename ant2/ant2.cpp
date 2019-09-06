@@ -78,7 +78,7 @@ int TryParseStringToInt(const string input, const int base, string arg_name) {
 }
 
 int main(int argc, char* argv[]) {
-	std::srand((int)std::time(nullptr)); // new random
+	std::srand(static_cast<int>(std::time(nullptr))); // new random
 
 	if (argc < 2) {
 		cout << "usage: please write input file \n"

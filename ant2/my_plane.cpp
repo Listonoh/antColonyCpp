@@ -10,7 +10,7 @@ vector<int> my_plane::getAdjVal(int vertex) {
 	return k;
 };
 
-my_plane::my_plane(const double Alpha, const double Beta) {
+my_plane::my_plane(double Alpha, double Beta) {
 	edges = map<int, vector<tuple<int, int>>>();
 	ALPHA = Alpha, BETA = Beta;
 };
@@ -124,8 +124,8 @@ int my_plane::getNextVertex(int vertex, const set<int>& missingVert) {
 			continue;
 		}
 
-		double ETAij = (double)pow((double)1 / value, BETA);
-		double TAUij = (double)pow(getPheromons(vertex, to), ALPHA);
+		double ETAij = static_cast<double>(pow(static_cast<double>(1) / value, BETA));
+		double TAUij = static_cast<double>(pow(getPheromons(vertex, to), ALPHA));
 
 		prob[i] = ETAij * TAUij;
 		trgVert[i] = to;
@@ -141,8 +141,8 @@ int my_plane::getNextVertex(int vertex, const set<int>& missingVert) {
 			auto to = std::get<0>(item);
 			auto value = std::get<1>(item);
 
-			double ETAij = (double)pow((double)1 / value, BETA);
-			double TAUij = (double)pow(getPheromons(vertex, to), ALPHA);
+			double ETAij = static_cast<double>(pow(static_cast<double>(1) / value, BETA));
+			double TAUij = static_cast<double>(pow(getPheromons(vertex, to), ALPHA));
 
 			prob[i] = ETAij * TAUij;
 			trgVert[i] = to;
@@ -152,7 +152,7 @@ int my_plane::getNextVertex(int vertex, const set<int>& missingVert) {
 	}
 
 	double upper_bound = sigma;
-	double a_random_double = (upper_bound) * ((double)rand() / (double)RAND_MAX);
+	double a_random_double = (upper_bound) * (static_cast<double>(rand()) / RAND_MAX);
 
 	for (int i = 0; i < nPosib; i++)
 	{
