@@ -7,7 +7,7 @@ Ant::Ant(my_plane* plan) {
 
 tuple<int, vector<int>> Ant::findPath() {
 	auto missingVertexes = pl->getVertexes();
-	int max = missingVertexes.size();
+	int max = static_cast<int>(missingVertexes.size());
 	max *= 4; //it shouldnt be more then 2* but its "tree" and tree has n-1 edges
 
 	int r = rand() % max;

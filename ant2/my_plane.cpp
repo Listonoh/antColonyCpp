@@ -108,7 +108,7 @@ void my_plane::WA() {
 
 
 int my_plane::getNextVertex(int vertex, const set<int>& missingVert) {
-	int nPosib = edges[vertex].size();
+	int nPosib = static_cast<int>(edges[vertex].size());
 	vector<int> trgVert(nPosib);
 	vector<double> prob(nPosib);
 	double sigma = 0; //all probabilities
@@ -136,7 +136,7 @@ int my_plane::getNextVertex(int vertex, const set<int>& missingVert) {
 	//if no edge is selected we choose randomly from the rest
 	if (sigma == 0) {
 		i = 0;
-		nPosib = edges[vertex].size();
+		nPosib = static_cast<int>(edges[vertex].size());
 		for (auto const& item : edges[vertex]) {
 			auto to = std::get<0>(item);
 			auto value = std::get<1>(item);
