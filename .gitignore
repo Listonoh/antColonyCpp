@@ -1,12 +1,23 @@
-*.obj
-*.tlog
-*.log
-*.ipch
-*.opendb
-*.db
+# gitignore for C++
+# Compiled Object files
+*.slo
+*.lo
+*.o
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+
+# Visual Studio Files
+Debug
+Release
 *.suo
-*.pdb
-*.ilk
-*.exe
-*.idb
-*.lastbuildstate
+*.csproj.user
+*.vbproj.user
+ipch
+*sdf
