@@ -16,11 +16,11 @@
 using namespace std;
 
 bool isOptimal(int value, int iteration, int max_iteration, int &mValue, int &mCounter) {
-	if (iteration > max_iteration){
+	if (iteration > max_iteration){ //check if it doesn't exceed maximal iterations
 		return true;
 	}
 
-	if (mValue == -1) {
+	if (mValue == -1) { //if there is no optimal Value just take current
 		mValue = value;
 		return false;
 	}
@@ -57,7 +57,25 @@ tuple<int, vector<int>> AntColonyTSP(my_plane* plan, int max_iteration, double r
 	return bestResult;
 }
 
+double TryParseStringToDouble(const string input, const double base, string arg_name) {
+	try{
+		return stod(input);
+	}
+	catch (const std::exception&){
+		cout << "neplatna hodnota argumentu: " << arg_name << "hodnota" << input << "\n";
+	}
+	return base;
+}
 
+int TryParseStringToInt(const string input, const int base, string arg_name) {
+	try {
+		return stoi(input);
+	}
+	catch (const std::exception&) {
+		cout << "neplatna hodnota argumentu: " << arg_name << "hodnota" << input << "\n";
+	}
+	return base;
+}
 
 int main(int argc, char* argv[]) {
 	std::srand((int)std::time(nullptr)); // new random
@@ -68,98 +86,51 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 
-	double alfa = 1; double beta = 1; double rho = 0.01; double Q = 2; int max = 100;
+	double alpha = 1; double beta = 1; double rho = 0.01; double Q = 2; int max = 100;
 
-	cout << "ok" << argc;
 	int index = 2;
 	while (index + 1 < argc)
 	{
 		string arg_name = argv[index];
 		string arg_value = argv[index + 1];
 		index += 2;
-		if (arg_name == "--alfa")
-		{
-			try
-			{
-				alfa = stod(arg_value);
-			}
-			catch (const std::exception&)
-			{
-				cout << "neplatny hodnota argumentu: " << arg_name << "hodnota" << arg_value << "\n";
-			}
+		if (arg_name == "--alpha"){
+			alpha = TryParseStringToDouble(arg_value, alpha, arg_name);
 		}
-		else if (arg_name == "--beta")
-		{
-			try
-			{
-				beta = stod(arg_value);
-			}
-			catch (const std::exception&)
-			{
-				cout << "neplatny hodnota argumentu: " << arg_name << "hodnota" << arg_value << "\n";
-			}
+		else if (arg_name == "--beta"){
+			beta = TryParseStringToDouble(arg_value, beta, arg_name);
 		}
-		else if (arg_name == "--rho")
-		{
-			try
-			{
-				rho = stod(arg_value);
-			}
-			catch (const std::exception&)
-			{
-				cout << "neplatny hodnota argumentu: " << arg_name << "hodnota" << arg_value << "\n";
-			}
-
+		else if (arg_name == "--rho"){
+			rho = TryParseStringToDouble(arg_value, rho, arg_name);
 		}
-		else if (arg_name == "--Q")
-		{
-			try
-			{
-				Q = stod(arg_value);
-			}
-			catch (const std::exception&)
-			{
-				cout << "neplatny hodnota argumentu: " << arg_name << "hodnota" << arg_value << "\n";
-			}
+		else if (arg_name == "--Q"){
+			Q = TryParseStringToDouble(arg_value, Q, arg_name);
 		}
-		else if (arg_name == "--max")
-		{
-			try
-			{
-				max = stoi(arg_value);
-			}
-			catch (const std::exception&)
-			{
-				cout << "neplatny hodnota argumentu: " << arg_name << "hodnota" << arg_value << "\n";
-			}
+		else if (arg_name == "--max"){
+			max = TryParseStringToInt(arg_value, max, arg_name);
 		}
-		else
-		{
-			cout << "neplatny argument: " << arg_name << "\n";
+		else{
+			cout << "Neplatny argument: " << arg_name << "\n";
 		};
 	}
-
 
 	string file = argv[1];
 	ifstream inpu(file);
 
-	if (!inpu)
-	{
+	if (!inpu){
 		cout << "Unable to open file: " << file;
 		return 1;
 	}
 
-	auto mp = new my_plane(alfa, beta);
+	auto mp = new my_plane(alpha, beta);
 
 	int from, to, value;
 
-	while (inpu >> from >> to >> value)
-	{
+	while (inpu >> from >> to >> value){
 		mp->insEdge2(from, to, value);
 	}
-	//impu.close();
-	//mp.WA();
-	cout << "Presolving ";
+
+	cout << "Presolving " << "\n";
 	auto tK = AntColonyTSP(mp, max, rho, Q);
 	cout << "Aftersolving " << "\n";
 	auto k = get<1>(tK);
