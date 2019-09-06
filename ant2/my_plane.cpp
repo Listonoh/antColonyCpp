@@ -43,7 +43,7 @@ void my_plane::setPheromons(int from, int to, double value) {
 };
 
 
-void my_plane::updatePheromons(vector<int>& path, double Rho, double Q) {
+void my_plane::updatePheromons(const vector<int>& path, double Rho, double Q) {
 	//Rho - evaporating coefficient
 	//Q - coefficient for increasing pheromones
 
@@ -90,7 +90,7 @@ void my_plane::insEdge2(int from, int to, int value) {
 			to = temp;
 		};
 
-		edgesValues[make_tuple(from, to)] = value; // from < to 
+		edgesValues[make_tuple(from, to)] = value; // from < to
 		pheromones[make_tuple(from, to)] = 1;
 	}
 };
@@ -107,7 +107,7 @@ void my_plane::WA() {
 };
 
 
-int my_plane::getNextVertex(int vertex, set<int>& missingVert) {
+int my_plane::getNextVertex(int vertex, const set<int>& missingVert) {
 	int nPosib = edges[vertex].size();
 	vector<int> trgVert(nPosib);
 	vector<double> prob(nPosib);

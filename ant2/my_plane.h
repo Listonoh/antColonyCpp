@@ -19,9 +19,9 @@ class my_plane {
 	vector<int> getAdjVal(int vertex);
 
 public:
-	int getNextVertex(int vertex, std::set<int>& missingVert);
+	int getNextVertex(int vertex, const std::set<int>& missingVert);
 
-	void updatePheromons(std::vector<int>& path, double Ro, double Q);
+	void updatePheromons(const std::vector<int>& path, double Ro, double Q);
 
 	my_plane(double Alpha, double Beta);
 
