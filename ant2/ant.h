@@ -5,7 +5,6 @@
 using namespace std;
 
 class Ant {
-	vector<int> path;
 	my_plane* pl;
 
 public:

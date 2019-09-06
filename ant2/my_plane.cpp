@@ -154,11 +154,11 @@ int my_plane::getNextVertex(int vertex, const set<int>& missingVert) {
 	double upper_bound = sigma;
 	double a_random_double = (upper_bound) * (static_cast<double>(rand()) / RAND_MAX);
 
-	for (int i = 0; i < nPosib; i++)
+	for (int j = 0; j < nPosib; j++)
 	{
-		a_random_double -= prob[i];
+		a_random_double -= prob[j];
 		if (a_random_double <= 0) {
-			return trgVert[i];
+			return trgVert[j];
 		};
 	}
 

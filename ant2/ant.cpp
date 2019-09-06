@@ -8,9 +8,8 @@ Ant::Ant(my_plane* plan) {
 tuple<int, vector<int>> Ant::findPath() {
 	auto missingVertexes = pl->getVertexes();
 	int max = static_cast<int>(missingVertexes.size());
-	max *= 4; //it shouldnt be more then 2* but its "tree" and tree has n-1 edges
+	max *= 4; //it shouldn't be more then 2* but its "tree" and tree has n-1 edges
 
-	int r = rand() % max;
 	auto from = *missingVertexes.begin();
 	auto path = vector<int>();
 	int location = from;
