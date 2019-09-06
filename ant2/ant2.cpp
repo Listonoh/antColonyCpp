@@ -15,11 +15,8 @@
 
 using namespace std;
 
-int mValue = -1;
-int mCounter = 0;
-bool isOptimal(int value, int iteration, int max_iteration) {
-	if (iteration > max_iteration)
-	{
+bool isOptimal(int value, int iteration, int max_iteration, int &mValue, int &mCounter) {
+	if (iteration > max_iteration){
 		return true;
 	}
 
@@ -35,24 +32,24 @@ bool isOptimal(int value, int iteration, int max_iteration) {
 	}
 
 	mCounter++;
-	if (mCounter >= 2)
-	{
+	if (mCounter >= 2){
 		return true;
 	}
 	return false;
 }
 
 tuple<int, vector<int>> AntColonyTSP(my_plane* plan, int max_iteration, double rho, double Q, int n = 20) {
-	auto ant1 = new Ant(plan);
-	auto bestResult = ant1->findPath();
+	auto ant1 = Ant(plan);
+	auto bestResult = ant1.findPath();
 	int iteration = 0;
+	int mValue = -1;
+	int mCounter = 0;
 
-	while (!isOptimal(get<0>(bestResult), iteration, max_iteration)) {
+	while (!isOptimal(get<0>(bestResult), iteration, max_iteration, mValue, mCounter)) {
 		iteration++;
 		for (int i = 0; i < n; i++) {
-			delete(ant1);
-			ant1 = new Ant(plan);
-			auto result = ant1->findPath();
+			ant1 = Ant(plan);
+			auto result = ant1.findPath();
 			if (get<0>(result) <= get<0>(bestResult)) bestResult = result;
 		}
 		plan->updatePheromons(get<1>(bestResult), rho, Q);
