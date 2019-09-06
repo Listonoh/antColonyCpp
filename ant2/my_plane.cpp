@@ -10,10 +10,9 @@ vector<int> my_plane::getAdjVal(int vertex) {
 	return k;
 };
 
-my_plane::my_plane(double Alpha, double Beta) {
+my_plane::my_plane(const double Alpha, const double Beta) {
 	edges = map<int, vector<tuple<int, int>>>();
 	ALPHA = Alpha, BETA = Beta;
-	cout << ALPHA;
 };
 
 int my_plane::getValue(int from, int to) {
@@ -44,9 +43,9 @@ void my_plane::setPheromons(int from, int to, double value) {
 };
 
 
-void my_plane::updatePheromons(vector<int>& path, double Ro, double Q) {
-	//Ro - evaporating coeficient
-	//Q - coeficient for increasing pheromons
+void my_plane::updatePheromons(vector<int>& path, double Rho, double Q) {
+	//Rho - evaporating coefficient
+	//Q - coefficient for increasing pheromones
 
 	set<tuple<int, int>> mSet;
 	//filing path
@@ -69,7 +68,7 @@ void my_plane::updatePheromons(vector<int>& path, double Ro, double Q) {
 
 	//evaporating of pheromones
 	for (auto& item : pheromones) { //for c11
-		item.second *= (1 - Ro);
+		item.second *= (1 - Rho);
 	}
 
 	//increasing pheromones based on path
@@ -98,7 +97,6 @@ void my_plane::insEdge2(int from, int to, int value) {
 
 //write all
 void my_plane::WA() {
-	//for (auto const& [key, val] : edges) { //c++17
 	for (auto const& edge : edges) {
 		std::cout << edge.first << ":  ";
 		for (auto const& point : edge.second) {
@@ -113,11 +111,10 @@ int my_plane::getNextVertex(int vertex, set<int>& missingVert) {
 	int nPosib = edges[vertex].size();
 	vector<int> trgVert(nPosib);
 	vector<double> prob(nPosib);
-	double sigma = 0; //all probabilties 
+	double sigma = 0; //all probabilities
 	int i = 0; //counter
 
-	//initial search for posible edges 
-	//for (auto const& [to, value] : edges[vertex]) { // for c++17
+	//initial search for possible edges
 	for (auto const& item : edges[vertex]) {
 		auto to = std::get<0>(item);
 		auto value = std::get<1>(item);
