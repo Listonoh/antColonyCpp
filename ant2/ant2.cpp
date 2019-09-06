@@ -86,7 +86,13 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 
-	double alpha = 1; double beta = 1; double rho = 0.01; double Q = 2; int max = 100;
+	// main variables for algorithm
+	double alpha = 1;
+	double beta = 1;
+	double rho = 0.01;
+	double Q = 2;
+	int max = 100;
+	//
 
 	int index = 2;
 	while (index + 1 < argc)
