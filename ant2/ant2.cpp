@@ -32,7 +32,7 @@ bool isOptimal(int value, int iteration, int max_iteration, int &mValue, int &mC
 	}
 
 	mCounter++;
-	if (mCounter >= 2){
+	if (mCounter >= 2) {
 		return true;
 	}
 	return false;
@@ -100,19 +100,19 @@ int main(int argc, char* argv[]) {
 		string arg_name = argv[index];
 		string arg_value = argv[index + 1];
 		index += 2;
-		if (arg_name == "--alpha"){
+		if (arg_name == "--alpha") {
 			alpha = TryParseStringToDouble(arg_value, alpha, arg_name);
 		}
-		else if (arg_name == "--beta"){
+		else if (arg_name == "--beta") {
 			beta = TryParseStringToDouble(arg_value, beta, arg_name);
 		}
-		else if (arg_name == "--rho"){
+		else if (arg_name == "--rho") {
 			rho = TryParseStringToDouble(arg_value, rho, arg_name);
 		}
-		else if (arg_name == "--Q"){
+		else if (arg_name == "--Q") {
 			Q = TryParseStringToDouble(arg_value, Q, arg_name);
 		}
-		else if (arg_name == "--max"){
+		else if (arg_name == "--max") {
 			max = TryParseStringToInt(arg_value, max, arg_name);
 		}
 		else{
@@ -132,7 +132,7 @@ int main(int argc, char* argv[]) {
 
 	int from, to, value;
 
-	while (inpu >> from >> to >> value){
+	while (inpu >> from >> to >> value) {
 		mp->insEdge2(from, to, value);
 	}
 
