@@ -5,10 +5,9 @@
 using namespace std;
 
 class Ant {
-	my_plane* pl;
+	my_plane& pl;
 
 public:
-	Ant(my_plane* plan);
-
+	Ant(my_plane& plan);
 	tuple<int, vector<int>> findPath();
 };

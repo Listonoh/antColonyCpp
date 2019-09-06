@@ -38,7 +38,7 @@ bool isOptimal(int value, int iteration, int max_iteration, int &mValue, int &mC
 	return false;
 }
 
-tuple<int, vector<int>> AntColonyTSP(my_plane* plan, int max_iteration, double rho, double Q, int n = 20) {
+tuple<int, vector<int>> AntColonyTSP(my_plane& plan, int max_iteration, double rho, double Q, int n = 20) {
 	auto ant1 = Ant(plan);
 	auto bestResult = ant1.findPath();
 	int iteration = 0;
@@ -48,11 +48,10 @@ tuple<int, vector<int>> AntColonyTSP(my_plane* plan, int max_iteration, double r
 	while (!isOptimal(get<0>(bestResult), iteration, max_iteration, mValue, mCounter)) {
 		iteration++;
 		for (int i = 0; i < n; i++) {
-			ant1 = Ant(plan);
 			auto result = ant1.findPath();
 			if (get<0>(result) <= get<0>(bestResult)) bestResult = result;
 		}
-		plan->updatePheromons(get<1>(bestResult), rho, Q);
+		plan.updatePheromons(get<1>(bestResult), rho, Q);
 	}
 	return bestResult;
 }
@@ -128,12 +127,12 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 
-	auto mp = new my_plane(alpha, beta);
+	auto mp = my_plane(alpha, beta);
 
 	int from, to, value;
 
 	while (inpu >> from >> to >> value) {
-		mp->insEdge2(from, to, value);
+		mp.insEdge2(from, to, value);
 	}
 
 	cout << "Presolving " << "\n";
@@ -148,6 +147,5 @@ int main(int argc, char* argv[]) {
 	}
 	cout << "\n";
 
-	delete mp;
 	return 0;
 }

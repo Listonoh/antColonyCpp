@@ -1,12 +1,11 @@
 #include "ant.h"
 
-
-Ant::Ant(my_plane* plan) {
-	pl = plan;
+//cant be const because i modify it
+Ant::Ant(my_plane& plan) : pl(plan) {
 };
 
 tuple<int, vector<int>> Ant::findPath() {
-	auto missingVertexes = pl->getVertexes();
+	auto missingVertexes = pl.getVertexes();
 	int max = static_cast<int>(missingVertexes.size());
 	max *= 4; //it shouldn't be more then 2* but its "tree" and tree has n-1 edges
 
@@ -23,8 +22,8 @@ tuple<int, vector<int>> Ant::findPath() {
 	while (missingVertexes.size() != 0 && timer < max) {
 		timer++;
 
-		int nextVertex = pl->getNextVertex(location, missingVertexes);
-		value += pl->getValue(location, nextVertex);
+		int nextVertex = pl.getNextVertex(location, missingVertexes);
+		value += pl.getValue(location, nextVertex);
 		missingVertexes.erase(nextVertex);
 		path.emplace_back(nextVertex);
 		location = nextVertex;
@@ -34,8 +33,8 @@ tuple<int, vector<int>> Ant::findPath() {
 	missingVertexes.insert(from);
 	while (location != from && timer < max) {
 		timer++;
-		int nextVertex = pl->getNextVertex(location, missingVertexes);
-		value += pl->getValue(location, nextVertex);
+		int nextVertex = pl.getNextVertex(location, missingVertexes);
+		value += pl.getValue(location, nextVertex);
 		path.emplace_back(nextVertex);
 		location = nextVertex;
 	}
