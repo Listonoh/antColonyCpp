@@ -2,9 +2,21 @@
 ant colony optimization in c++. On traveling salesman problem.
 
 ## Usage
-ant.exe "jemnoSouboru" --alfa 1 --beta 0.9 --rho 0.01 --Q 2 --max 100
-kde alfa, beta, rho, Q a max jsou nepovine argumenty. Které určují jak se bude funkce popsaná níže chovat (max je maximální počet generací). 
-vrátí hodnotu cesty a cestu samotnou na standartní výstup ve formátu:
+ant.exe "NameOfFile" --alfa 1 --beta 0.9 --rho 0.01 --Q 2 --max 100
+where alfa, beta, rho, Q a max are non-essential arguments. That will determine how will the function below behave (max is maximal number of generations). 
+
+### Input 
+takes files in this notation:
+```python
+vertex1 vertex2 valueForPathBetweenV1V2
+v1 v2 value
+v1 v2 value
+...
+...
+```
+
+### Output 
+returns value and path for best solution onb stawndart output in this format:
 ``` python
 final size: 17
 final value: 43
