@@ -1,14 +1,12 @@
 #pragma once
 #include <vector>
 #include "my_plane.h"
-
-using namespace std;
+#include "my_path.h"
 
 class Ant {
 	my_plane& pl;
 
 public:
 	Ant(my_plane& plan);
-	tuple<int, vector<int>> findPath();
+	my_Path findPath();
 };
- 

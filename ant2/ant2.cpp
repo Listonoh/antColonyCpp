@@ -12,6 +12,7 @@
 #include <new>
 #include "my_plane.h"
 #include "ant.h"
+#include "my_path.h"
 
 using namespace std;
 
@@ -38,20 +39,20 @@ bool isOptimal(int value, int iteration, int max_iteration, int &mValue, int &mC
 	return false;
 }
 
-tuple<int, vector<int>> AntColonyTSP(my_plane& plan, int max_iteration, double rho, double Q, int n = 20) {
+my_Path AntColonyTSP(my_plane& plan, int max_iteration, double rho, double Q, int n = 20) {
 	auto ant1 = Ant(plan);
 	auto bestResult = ant1.findPath();
 	int iteration = 0;
 	int mValue = -1;
 	int mCounter = 0;
 
-	while (!isOptimal(get<0>(bestResult), iteration, max_iteration, mValue, mCounter)) {
+	while (!isOptimal(bestResult.Value, iteration, max_iteration, mValue, mCounter)) {
 		iteration++;
 		for (int i = 0; i < n; i++) {
 			auto result = ant1.findPath();
-			if (get<0>(result) <= get<0>(bestResult)) bestResult = result;
+			if (result.Value <= bestResult.Value) bestResult = result;
 		}
-		plan.updatePheromons(get<1>(bestResult), rho, Q);
+		plan.updatePheromons(bestResult.Vertexes, rho, Q);
 	}
 	return bestResult;
 }
@@ -138,10 +139,10 @@ int main(int argc, char* argv[]) {
 	cout << "Presolving " << "\n";
 	auto tK = AntColonyTSP(mp, max, rho, Q);
 	cout << "Aftersolving " << "\n";
-	auto k = get<1>(tK);
+	auto k = tK.Vertexes;
 
 	cout << "final size: " << k.size() << "\n";
-	cout << "final value: " << get<0>(tK) << "\n";
+	cout << "final value: " << tK.Value << "\n";
 	for (size_t i = 0; i < k.size(); i++) {
 		cout << k[i] << " ";
 	}

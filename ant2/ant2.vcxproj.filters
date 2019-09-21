@@ -32,5 +32,8 @@
     <ClInclude Include="my_plane.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="my_path.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

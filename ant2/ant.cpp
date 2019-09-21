@@ -1,10 +1,11 @@
 #include "ant.h"
+#include "my_path.h"
 
 //cant be const because i modify it
 Ant::Ant(my_plane& plan) : pl(plan) {
 };
 
-tuple<int, vector<int>> Ant::findPath() {
+my_Path Ant::findPath() {
 	auto missingVertexes = pl.getVertexes();
 	int max = static_cast<int>(missingVertexes.size());
 	max *= 4; //it shouldn't be more then 2* but its "tree" and tree has n-1 edges
@@ -41,10 +42,16 @@ tuple<int, vector<int>> Ant::findPath() {
 
 	if (timer < max)
 	{
-		return make_tuple(value, path);
+		my_Path mPath;
+		mPath.Value = value;
+		mPath.Vertexes = path;
+		return mPath;
 	}
 	else {
-		return make_tuple(INT_MAX, vector<int>{1});
+		my_Path mPath;
+		mPath.Value = INT_MAX;
+		mPath.Vertexes = vector<int>{1};
+		return my_Path{INT_MAX, vector<int>{1} };
 	}
 };
 
