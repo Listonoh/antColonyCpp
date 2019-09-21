@@ -4,8 +4,7 @@
 
 #include <vector>
 struct my_Path{
-	int Value;
+	int Value = INT_MAX;
 	std::vector<int> Vertexes;
 };
-
 #endif
