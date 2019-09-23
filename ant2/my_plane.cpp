@@ -11,7 +11,7 @@ vector<int> my_plane::getAdjVal(int vertex) {
 };
 
 my_plane::my_plane(double Alpha, double Beta) {
-	edges = map<int, vector<tuple<int, int>>>();
+	edges = vector<vector<tuple<int, int>>>();
 	ALPHA = Alpha, BETA = Beta;
 };
 
@@ -79,27 +79,49 @@ void my_plane::updatePheromons(const vector<int>& path, double Rho, double Q) {
 	}
 };
 
-void my_plane::insEdge2(int from, int to, int value) {
-	if (from != to) {
-		edges[from].emplace_back(make_tuple(to, value));
-		edges[to].emplace_back(make_tuple(from, value));
+void my_plane::insEdge(int from, int to, int value) {
+	if (bMap[from] == 0)
+	{
+		bMap[from] = bMap.size();
+	};
 
-		if (from > to) {
-			int temp = from;
-			from = to;
-			to = temp;
+	if (bMap[to] == 0)
+	{
+		bMap[to] = bMap.size();
+	};
+	auto nFrom = bMap[from]-1;//because we start at 0->1 and we want 0->0 this is only here and have no impact later 
+	auto nTo = bMap[to]-1;
+
+	if (nFrom != nTo) {
+		if (edges.size() <= nFrom)
+		{
+			edges.emplace_back(vector<tuple<int, int>>());
+		}
+		if (edges.size() <= nTo)
+		{
+			edges.emplace_back(vector<tuple<int, int>>());
+		}
+
+		edges[nFrom].emplace_back(make_tuple(nTo, value));
+		edges[nTo].emplace_back(make_tuple(nFrom, value));
+
+		if (nFrom > nTo) {
+			int temp = nFrom;
+			nFrom = nTo;
+			nTo = temp;
 		};
 
-		edgesValues[make_tuple(from, to)] = value; // from < to
-		pheromones[make_tuple(from, to)] = 1;
+		edgesValues[make_tuple(nFrom, nTo)] = value; // from < to
+		pheromones[make_tuple(nFrom, nTo)] = 1;
 	}
 };
 
 //write all
 void my_plane::WA() {
-	for (auto const& edge : edges) {
-		std::cout << edge.first << ":  ";
-		for (auto const& point : edge.second) {
+	for (size_t i = 0; i < edges.size(); i++)
+	{
+		std::cout << i << ":  ";
+		for (auto const& point : edges[i]) {
 			cout << "to: " << std::get<0>(point) << ", val :" << std::get<1>(point) << " | ";
 		}
 		cout << std::endl;
@@ -111,7 +133,7 @@ int my_plane::getNextVertex(int vertex, const set<int>& missingVert) {
 	int nPosib = static_cast<int>(edges[vertex].size());
 	vector<int> trgVert(nPosib);
 	vector<double> prob(nPosib);
-	double sigma = 0; //all probabilities
+	double sigma = 0; //all probabilities at start 0
 	int i = 0; //counter
 
 	//initial search for possible edges
@@ -168,10 +190,9 @@ int my_plane::getNextVertex(int vertex, const set<int>& missingVert) {
 
 set<int> my_plane::getVertexes() {
 	set<int> ret;
-	for (auto const& edge : edges)
+	for (int i = 0; i < edges.size(); i++)
 	{
-		auto key = edge.first;
-		ret.insert(key);
+		ret.insert(i);
 	}
 	return ret;
 };

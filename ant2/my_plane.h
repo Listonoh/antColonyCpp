@@ -9,7 +9,8 @@
 using namespace std;
 
 class my_plane {
-	map<int, vector<tuple<int, int>>> edges; //from , <to , value>
+	map<int, int> bMap;
+	vector<vector<tuple<int, int>>> edges; //from , <to , value>
 	map<tuple<int, int>, int> edgesValues;
 	map<tuple<int, int>, double> pheromones;
 	std::default_random_engine re;
@@ -31,7 +32,7 @@ public:
 
 	void setPheromons(int from, int to, double value);
 
-	void insEdge2(int from, int to, int value);
+	void insEdge(int from, int to, int value);
 
 	void WA();
 

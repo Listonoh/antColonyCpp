@@ -10,3 +10,5 @@
 *.exe
 *.idb
 *.lastbuildstate
+*/x64/*
+/x64/*

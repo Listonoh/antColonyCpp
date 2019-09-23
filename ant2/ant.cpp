@@ -48,9 +48,6 @@ my_Path Ant::findPath() {
 		return mPath;
 	}
 	else {
-		my_Path mPath;
-		mPath.Value = INT_MAX;
-		mPath.Vertexes = vector<int>{1};
 		return my_Path{INT_MAX, vector<int>{1} };
 	}
 };

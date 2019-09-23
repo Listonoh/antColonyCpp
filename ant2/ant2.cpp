@@ -13,6 +13,8 @@
 #include "my_plane.h"
 #include "ant.h"
 #include "my_path.h"
+#include <windows.h>
+#include <experimental/filesystem>
 
 using namespace std;
 
@@ -86,6 +88,7 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 
+	cout << std::experimental::filesystem::current_path();
 	// main variables for algorithm
 	double alpha = 1;
 	double beta = 1;
@@ -133,7 +136,7 @@ int main(int argc, char* argv[]) {
 	int from, to, value;
 
 	while (inpu >> from >> to >> value) {
-		mp.insEdge2(from, to, value);
+		mp.insEdge(from, to, value);
 	}
 
 	cout << "Presolving " << "\n";
