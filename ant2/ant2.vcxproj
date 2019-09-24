@@ -153,7 +153,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ant.cpp" />
-    <ClCompile Include="ant2.cpp" />
+    <ClCompile Include="antMain.cpp" />
     <ClCompile Include="myPlane.cpp" />
   </ItemGroup>
   <ItemGroup>

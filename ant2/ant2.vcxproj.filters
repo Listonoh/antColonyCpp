@@ -15,14 +15,14 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ant2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ant.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
     <ClCompile Include="myPlane.cpp">
       <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="antMain.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
