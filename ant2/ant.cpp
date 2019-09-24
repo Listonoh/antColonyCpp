@@ -40,15 +40,10 @@ myPath Ant::findPath() {
 		location = nextVertex;
 	}
 
-	if (timer < max)
-	{
-		myPath mPath;
-		mPath.Value = value;
-		mPath.Vertexes = path;
-		return mPath;
+	if (timer < max) {
+		return myPath{ value, path };
 	}
 	else {
 		return myPath{std::numeric_limits<int>::max(), vector<int>{1} };
 	}
 };
-
