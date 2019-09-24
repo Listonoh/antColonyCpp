@@ -1,11 +1,11 @@
 #include "ant.h"
-#include "my_path.h"
+#include "myPath.h"
 
 //cant be const because i modify it
-Ant::Ant(my_plane& plan) : pl(plan) {
+Ant::Ant(myPlane& plan) : pl(plan) {
 };
 
-my_Path Ant::findPath() {
+myPath Ant::findPath() {
 	auto missingVertexes = pl.getVertexes();
 	int max = static_cast<int>(missingVertexes.size());
 	max *= 4; //it shouldn't be more then 2* but its "tree" and tree has n-1 edges
@@ -42,13 +42,13 @@ my_Path Ant::findPath() {
 
 	if (timer < max)
 	{
-		my_Path mPath;
+		myPath mPath;
 		mPath.Value = value;
 		mPath.Vertexes = path;
 		return mPath;
 	}
 	else {
-		return my_Path{INT_MAX, vector<int>{1} };
+		return myPath{std::numeric_limits<int>::max(), vector<int>{1} };
 	}
 };
 

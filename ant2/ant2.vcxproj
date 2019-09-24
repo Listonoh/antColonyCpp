@@ -106,6 +106,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -153,12 +154,12 @@
   <ItemGroup>
     <ClCompile Include="ant.cpp" />
     <ClCompile Include="ant2.cpp" />
-    <ClCompile Include="my_plane.cpp" />
+    <ClCompile Include="myPlane.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ant.h" />
-    <ClInclude Include="my_path.h" />
-    <ClInclude Include="my_plane.h" />
+    <ClInclude Include="myPath.h" />
+    <ClInclude Include="myPlane.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,5 +1,5 @@
 #pragma once
-#include "my_plane.h"
+#include "myPlane.h"
 #include <map>
 #include <random>
 #include <iostream>
@@ -82,14 +82,14 @@ void myPlane::updatePheromons(const vector<int>& path, double Rho, double Q) {
 void myPlane::insEdge(int from, int to, int value) {
 	if (bMap[from] == 0)
 	{
-		bMap[from] = bMap.size();
+		bMap[from] = static_cast<int>(bMap.size());
 	};
 
 	if (bMap[to] == 0)
 	{
-		bMap[to] = bMap.size();
+		bMap[to] = static_cast<int>(bMap.size());
 	};
-	auto nFrom = bMap[from]-1;//because we start at 0->1 and we want 0->0 this is only here and have no impact later 
+	auto nFrom = bMap[from]-1;//because we start at 0->1 and we want 0->0 this is only here and have no impact later
 	auto nTo = bMap[to]-1;
 
 	if (nFrom != nTo) {

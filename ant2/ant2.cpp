@@ -10,9 +10,9 @@
 #include <ctime>
 #include <climits>
 #include <new>
-#include "my_plane.h"
+#include "myPlane.h"
 #include "ant.h"
-#include "my_path.h"
+#include "myPath.h"
 #include <windows.h>
 #include <experimental/filesystem>
 
@@ -41,7 +41,7 @@ bool isOptimal(int value, int iteration, int max_iteration, int &mValue, int &mC
 	return false;
 }
 
-my_Path AntColonyTSP(my_plane& plan, int max_iteration, double rho, double Q, int n = 20) {
+myPath AntColonyTSP(myPlane& plan, int max_iteration, double rho, double Q, int n = 20) {
 	auto ant1 = Ant(plan);
 	auto bestResult = ant1.findPath();
 	int iteration = 0;
@@ -100,26 +100,26 @@ int main(int argc, char* argv[]) {
 	int index = 2;
 	while (index + 1 < argc)
 	{
-		string arg_name = argv[index];
-		string arg_value = argv[index + 1];
+		string argName = argv[index];
+		string argValue = argv[index + 1];
 		index += 2;
-		if (arg_name == "--alpha") {
-			alpha = TryParseStringToDouble(arg_value, alpha, arg_name);
+		if (argName == "--alpha") {
+			alpha = TryParseStringToDouble(argValue, alpha, argName);
 		}
-		else if (arg_name == "--beta") {
-			beta = TryParseStringToDouble(arg_value, beta, arg_name);
+		else if (argName == "--beta") {
+			beta = TryParseStringToDouble(argValue, beta, argName);
 		}
-		else if (arg_name == "--rho") {
-			rho = TryParseStringToDouble(arg_value, rho, arg_name);
+		else if (argName == "--rho") {
+			rho = TryParseStringToDouble(argValue, rho, argName);
 		}
-		else if (arg_name == "--Q") {
-			Q = TryParseStringToDouble(arg_value, Q, arg_name);
+		else if (argName == "--Q") {
+			Q = TryParseStringToDouble(argValue, Q, argName);
 		}
-		else if (arg_name == "--max") {
-			max = TryParseStringToInt(arg_value, max, arg_name);
+		else if (argName == "--max") {
+			max = TryParseStringToInt(argValue, max, argName);
 		}
 		else{
-			cout << "Neplatny argument: " << arg_name << "\n";
+			cout << "Neplatny argument: " << argName << "\n";
 		};
 	}
 
@@ -131,7 +131,7 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 
-	auto mp = my_plane(alpha, beta);
+	auto mp = myPlane(alpha, beta);
 
 	int from, to, value;
 
@@ -139,9 +139,9 @@ int main(int argc, char* argv[]) {
 		mp.insEdge(from, to, value);
 	}
 
-	cout << "Presolving " << "\n";
+	cout << "Presolving \n";
 	auto tK = AntColonyTSP(mp, max, rho, Q);
-	cout << "Aftersolving " << "\n";
+	cout << "Aftersolving \n";
 	auto k = tK.Vertexes;
 
 	cout << "final size: " << k.size() << "\n";

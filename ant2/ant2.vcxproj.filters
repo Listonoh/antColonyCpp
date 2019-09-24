@@ -21,7 +21,7 @@
     <ClCompile Include="ant.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="my_plane.cpp">
+    <ClCompile Include="myPlane.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -29,10 +29,10 @@
     <ClInclude Include="ant.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="my_plane.h">
+    <ClInclude Include="myPlane.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="my_path.h">
+    <ClInclude Include="myPath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

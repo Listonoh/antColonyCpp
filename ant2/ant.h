@@ -1,12 +1,12 @@
 #pragma once
 #include <vector>
-#include "my_plane.h"
-#include "my_path.h"
+#include "myPlane.h"
+#include "myPath.h"
 
 class Ant {
-	my_plane& pl;
+	myPlane& pl;
 
 public:
-	Ant(my_plane& plan);
-	my_Path findPath();
+	Ant(myPlane& plan);
+	myPath findPath();
 };
