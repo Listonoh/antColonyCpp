@@ -10,9 +10,8 @@ vector<int> myPlane::getAdjVal(int vertex) {
 	return k;
 };
 
-myPlane::myPlane(double Alpha, double Beta) {
+myPlane::myPlane(double Alpha, double Beta) : ALPHA{ Alpha }, BETA{ Beta } {
 	edges = vector<vector<tuple<int, int>>>();
-	ALPHA = Alpha, BETA = Beta;
 };
 
 int myPlane::getValue(int from, int to) {
@@ -173,13 +172,13 @@ int myPlane::getNextVertex(int vertex, const set<int>& missingVert) {
 		}
 	}
 
-	double upper_bound = sigma;
-	double a_random_double = (upper_bound) * (static_cast<double>(rand()) / RAND_MAX);
+	double upperBound = sigma;
+	double aRandomDouble = (upperBound) * (static_cast<double>(rand()) / RAND_MAX);
 
 	for (int j = 0; j < nPosib; j++)
 	{
-		a_random_double -= prob[j];
-		if (a_random_double <= 0) {
+		aRandomDouble -= prob[j];
+		if (aRandomDouble <= 0) {
 			return trgVert[j];
 		};
 	}

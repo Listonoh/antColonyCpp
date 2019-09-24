@@ -14,8 +14,8 @@ class myPlane {
 	map<tuple<int, int>, int> edgesValues;
 	map<tuple<int, int>, double> pheromones;
 	std::default_random_engine re;
-	double BETA = 1;
-	double ALPHA = 1;
+	const double BETA = 1;
+	const double ALPHA = 1;
 
 	vector<int> getAdjVal(int vertex);
 

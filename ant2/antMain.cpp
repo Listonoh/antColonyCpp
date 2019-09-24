@@ -88,7 +88,6 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 
-	cout << std::experimental::filesystem::current_path();
 	// main variables for algorithm
 	double alpha = 1;
 	double beta = 1;
