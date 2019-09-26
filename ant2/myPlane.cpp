@@ -8,11 +8,11 @@ vector<int> myPlane::getAdjVal(int vertex) {
 	auto k = vector<int>();
 	k.emplace_back(vertex);
 	return k;
-};
+}
 
 myPlane::myPlane(double Alpha, double Beta) : ALPHA{ Alpha }, BETA{ Beta } {
 	edges = vector<vector<tuple<int, int>>>();
-};
+}
 
 int myPlane::getValue(int from, int to) {
 	if (from > to) {
@@ -21,7 +21,7 @@ int myPlane::getValue(int from, int to) {
 		from = temp;
 	}
 	return edgesValues[make_tuple(from, to)];
-};
+}
 
 double myPlane::getPheromons(int from, int to) {
 	if (from > to) {
@@ -30,7 +30,7 @@ double myPlane::getPheromons(int from, int to) {
 		from = temp;
 	}
 	return pheromones[make_tuple(from, to)];
-};
+}
 
 void myPlane::setPheromons(int from, int to, double value) {
 	if (from > to) {
@@ -39,7 +39,7 @@ void myPlane::setPheromons(int from, int to, double value) {
 		from = temp;
 	}
 	pheromones[make_tuple(from, to)] = value;
-};
+}
 
 
 void myPlane::updatePheromons(const vector<int>& path, double Rho, double Q) {
@@ -76,7 +76,7 @@ void myPlane::updatePheromons(const vector<int>& path, double Rho, double Q) {
 		pheromones[*it] += Q / edgesValues[*it];
 		it++;
 	}
-};
+}
 
 void myPlane::insEdge(int from, int to, int value) {
 	if (bMap[from] == 0)
@@ -113,7 +113,7 @@ void myPlane::insEdge(int from, int to, int value) {
 		edgesValues[make_tuple(nFrom, nTo)] = value; // from < to
 		pheromones[make_tuple(nFrom, nTo)] = 1;
 	}
-};
+}
 
 //write all
 void myPlane::WA() {
@@ -125,7 +125,7 @@ void myPlane::WA() {
 		}
 		cout << std::endl;
 	}
-};
+}
 
 
 int myPlane::getNextVertex(int vertex, const set<int>& missingVert) {
@@ -184,7 +184,7 @@ int myPlane::getNextVertex(int vertex, const set<int>& missingVert) {
 	}
 
 	return get<0>(edges[vertex][nPosib]);
-};
+}
 
 
 set<int> myPlane::getVertexes() {
@@ -194,4 +194,4 @@ set<int> myPlane::getVertexes() {
 		ret.insert(i);
 	}
 	return ret;
-};
+}

@@ -3,7 +3,7 @@
 
 //cant be const because i modify it
 Ant::Ant(myPlane& plan) : pl(plan) {
-};
+}
 
 myPath Ant::findPath() {
 	auto missingVertexes = pl.getVertexes();
@@ -46,4 +46,4 @@ myPath Ant::findPath() {
 	else {
 		return myPath{std::numeric_limits<int>::max(), vector<int>{1} };
 	}
-};
+}
