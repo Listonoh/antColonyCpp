@@ -41,7 +41,7 @@ bool isOptimal(int value, int iteration, int max_iteration, int &mValue, int &mC
 	return false;
 }
 
-myPath AntColonyTSP(myPlane& plan, int max_iteration, double rho, double Q, int n = 20) {
+MyPath AntColonyTSP(MyPlane& plan, int max_iteration, double rho, double Q, int n = 20) {
 	auto ant1 = Ant(plan);
 	auto bestResult = ant1.findPath();
 	int iteration = 0;
@@ -133,7 +133,7 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 
-	auto mp = myPlane(alpha, beta);
+	auto mp = MyPlane(alpha, beta);
 
 	int from, to, value;
 

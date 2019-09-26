@@ -5,11 +5,11 @@
 #include <iostream>
 #include <algorithm>
 
-myPlane::myPlane(double Alpha, double Beta) : ALPHA{ Alpha }, BETA{ Beta } {
+MyPlane::MyPlane(double Alpha, double Beta) : ALPHA{ Alpha }, BETA{ Beta } {
 	edges = vector<vector<tuple<int, int>>>();
 }
 
-int myPlane::getValue(int from, int to) {
+int MyPlane::getValue(int from, int to) {
 	if (from > to) {
 		int temp = to;
 		to = from;
@@ -18,7 +18,7 @@ int myPlane::getValue(int from, int to) {
 	return edgesValues[make_tuple(from, to)];
 }
 
-double myPlane::getPheromons(int from, int to) {
+double MyPlane::getPheromons(int from, int to) {
 	if (from > to) {
 		int temp = to;
 		to = from;
@@ -27,7 +27,7 @@ double myPlane::getPheromons(int from, int to) {
 	return pheromones[make_tuple(from, to)];
 }
 
-void myPlane::setPheromons(int from, int to, double value) {
+void MyPlane::setPheromons(int from, int to, double value) {
 	if (from > to) {
 		int temp = to;
 		to = from;
@@ -36,41 +36,34 @@ void myPlane::setPheromons(int from, int to, double value) {
 	pheromones[make_tuple(from, to)] = value;
 }
 
-void myPlane::updatePheromons(const vector<int>& path, double Rho, double Q) {
+void MyPlane::updatePheromons(const vector<int>& path, double Rho, double Q) {
 	//Rho - evaporating coefficient
 	//Q - coefficient for increasing pheromones
-
-	vector<tuple<int, int>> mSet;
-	//filing path
-
-	int b, a = path[0];
-	tuple<int, int> ins;
-	for (size_t i = 1; i < path.size(); i++)
-	{
-		b = path[i];
-		if (a > b) {
-			ins = make_tuple(b, a);
-		}
-		else {
-			ins = make_tuple(a, b);
-		}
-
-		mSet.emplace_back(ins);
-		a = b;
-	}
 
 	//evaporating of pheromones
 	for (auto& item : pheromones) { //for c11
 		item.second *= (1 - Rho);
 	}
 
+	int b, a = path[0];
+	tuple<int, int> edge;
 	//increasing pheromones based on path
-	for (auto edge : mSet) {
+	for (size_t i = 1; i < path.size(); i++)
+	{
+		b = path[i];
+		if (a > b) {
+			edge = make_tuple(b, a);
+		}
+		else {
+			edge = make_tuple(a, b);
+		}
+
 		pheromones[edge] += Q / edgesValues[edge];
+		a = b;
 	}
 }
 
-void myPlane::insEdge(int from, int to, int value) {
+void MyPlane::insEdge(int from, int to, int value) {
 	if (bMap[from] == 0)
 	{
 		bMap[from] = static_cast<int>(bMap.size());
@@ -108,7 +101,7 @@ void myPlane::insEdge(int from, int to, int value) {
 }
 
 //write all
-void myPlane::WA() {
+void MyPlane::WA() {
 	for (size_t i = 0; i < edges.size(); i++)
 	{
 		std::cout << i << ":  ";
@@ -120,7 +113,7 @@ void myPlane::WA() {
 }
 
 
-int myPlane::getNextVertex(int vertex, const set<int>& missingVert) {
+int MyPlane::getNextVertex(int vertex, const set<int>& missingVert) {
 	int nPosib = static_cast<int>(edges[vertex].size());
 	vector<int> trgVert(nPosib);
 	vector<double> prob(nPosib);
@@ -175,11 +168,11 @@ int myPlane::getNextVertex(int vertex, const set<int>& missingVert) {
 		};
 	}
 
-	return get<0>(edges[vertex][nPosib-1]);
+	return get<0>(edges[vertex][0]);
 }
 
 
-set<int> myPlane::getVertexes() {
+set<int> MyPlane::getVertexes() {
 	set<int> ret;
 	for (int i = 0; i < edges.size(); i++)
 	{

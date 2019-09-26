@@ -8,7 +8,7 @@
 
 using namespace std;
 
-class myPlane {
+class MyPlane {
 	map<int, int> bMap;
 	vector<vector<tuple<int, int>>> edges; //from , <to , value>
 	map<tuple<int, int>, int> edgesValues;
@@ -22,7 +22,7 @@ public:
 
 	void updatePheromons(const std::vector<int>& path, double Ro, double Q);
 
-	myPlane(double Alpha, double Beta);
+	MyPlane(double Alpha, double Beta);
 
 	int getValue(int from, int to);
 

@@ -3,7 +3,7 @@
 #define myPathH
 
 #include <vector>
-struct myPath {
+struct MyPath {
 	int Value = std::numeric_limits<int>::max();
 	std::vector<int> Vertexes;
 };

@@ -4,9 +4,9 @@
 #include "myPath.h"
 
 class Ant {
-	myPlane& pl;
+	MyPlane& pl;
 
 public:
-	Ant(myPlane& plan);
-	myPath findPath();
+	Ant(MyPlane& plan);
+	MyPath findPath();
 };
