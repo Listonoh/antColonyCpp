@@ -18,7 +18,7 @@ class MyPlane {
 	const double ALPHA = 1;
 
 public:
-	int getNextVertex(int vertex, const std::set<int>& missingVert);
+	int getNextVertex(int vertex, const std::vector<int>& missingVert);
 
 	void updatePheromons(const std::vector<int>& path, double Ro, double Q);
 
@@ -34,5 +34,5 @@ public:
 
 	void WA();
 
-	set<int> getVertexes();
+	vector<int> getVertexes();
 };

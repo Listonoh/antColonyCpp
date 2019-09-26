@@ -107,7 +107,7 @@ void MyPlane::WA() {
 }
 
 
-int MyPlane::getNextVertex(int vertex, const set<int>& missingVert) {
+int MyPlane::getNextVertex(int vertex, const vector<int>& missingVert) {
 	int nPosib = static_cast<int>(edges[vertex].size());
 	vector<int> trgVert(nPosib);
 	vector<double> prob(nPosib);
@@ -119,7 +119,8 @@ int MyPlane::getNextVertex(int vertex, const set<int>& missingVert) {
 		auto to = std::get<0>(item);
 		auto value = std::get<1>(item);
 		//if is not in missing then skip him
-		if (missingVert.find(to) == missingVert.end()) {
+
+		if (std::binary_search(missingVert.begin(), missingVert.end(), to)) {
 			nPosib--;
 			continue;
 		}
@@ -165,10 +166,10 @@ int MyPlane::getNextVertex(int vertex, const set<int>& missingVert) {
 }
 
 
-set<int> MyPlane::getVertexes() {
-	set<int> ret;
+vector<int> MyPlane::getVertexes() {
+	vector<int> ret;
 	for (int i = 0; i < edges.size(); i++) {
-		ret.insert(i);
+		ret.emplace_back(i);
 	}
 	return ret;
 }

@@ -10,11 +10,11 @@ MyPath Ant::findPath() {
 	int max = static_cast<int>(missingVertexes.size());
 	max *= 4; //it shouldn't be more then 2* but its "tree" and tree has n-1 edges
 
-	auto from = *missingVertexes.begin();
+	auto from = missingVertexes[0];
 	auto path = vector<int>();
 	int location = from;
 	path.emplace_back(location);
-	missingVertexes.erase(from);
+	missingVertexes.erase(missingVertexes.begin());
 
 	int value = 0;
 	int timer = 0;
@@ -25,13 +25,13 @@ MyPath Ant::findPath() {
 
 		int nextVertex = pl.getNextVertex(location, missingVertexes);
 		value += pl.getValue(location, nextVertex);
-		missingVertexes.erase(nextVertex);
+		missingVertexes.erase(std::find(missingVertexes.begin(), missingVertexes.end(), nextVertex));
 		path.emplace_back(nextVertex);
 		location = nextVertex;
 	}
 
 	// returning back home
-	missingVertexes.insert(from);
+	missingVertexes.insert(missingVertexes.begin(),from);
 	while (location != from && timer < max) {
 		timer++;
 		int nextVertex = pl.getNextVertex(location, missingVertexes);
