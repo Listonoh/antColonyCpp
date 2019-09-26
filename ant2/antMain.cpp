@@ -50,8 +50,10 @@ myPath AntColonyTSP(myPlane& plan, int max_iteration, double rho, double Q, int 
 
 	while (!isOptimal(bestResult.Value, iteration, max_iteration, mValue, mCounter)) {
 		iteration++;
+		cout << "*";
 		for (int i = 0; i < n; i++) {
 			auto result = ant1.findPath();
+			cout << "-";
 			if (result.Value <= bestResult.Value) bestResult = result;
 		}
 		plan.updatePheromons(bestResult.Vertexes, rho, Q);
@@ -82,7 +84,7 @@ int TryParseStringToInt(const string input, const int base, string arg_name) {
 int main(int argc, char* argv[]) {
 	std::srand(static_cast<int>(std::time(nullptr))); // new random
 
-	if (argc < 2) {
+	if (argc < 0) {
 		cout << "usage: please write input file \n"
 			<< "example: '" << argv[0] << "' a.in" << "\n";
 		return 1;
@@ -122,7 +124,8 @@ int main(int argc, char* argv[]) {
 		};
 	}
 
-	string file = argv[1];
+	//string file = argv[1];
+	string file = "facebook.in";
 	ifstream inpu(file);
 
 	if (!inpu){

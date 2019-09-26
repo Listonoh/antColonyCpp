@@ -3,6 +3,7 @@
 #include <map>
 #include <random>
 #include <iostream>
+#include <algorithm>
 
 myPlane::myPlane(double Alpha, double Beta) : ALPHA{ Alpha }, BETA{ Beta } {
 	edges = vector<vector<tuple<int, int>>>();
@@ -174,7 +175,7 @@ int myPlane::getNextVertex(int vertex, const set<int>& missingVert) {
 		};
 	}
 
-	return get<0>(edges[vertex][nPosib]);
+	return get<0>(edges[vertex][nPosib-1]);
 }
 
 
