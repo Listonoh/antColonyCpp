@@ -4,12 +4,6 @@
 #include <random>
 #include <iostream>
 
-vector<int> myPlane::getAdjVal(int vertex) {
-	auto k = vector<int>();
-	k.emplace_back(vertex);
-	return k;
-}
-
 myPlane::myPlane(double Alpha, double Beta) : ALPHA{ Alpha }, BETA{ Beta } {
 	edges = vector<vector<tuple<int, int>>>();
 }
@@ -41,12 +35,11 @@ void myPlane::setPheromons(int from, int to, double value) {
 	pheromones[make_tuple(from, to)] = value;
 }
 
-
 void myPlane::updatePheromons(const vector<int>& path, double Rho, double Q) {
 	//Rho - evaporating coefficient
 	//Q - coefficient for increasing pheromones
 
-	set<tuple<int, int>> mSet;
+	vector<tuple<int, int>> mSet;
 	//filing path
 
 	int b, a = path[0];
@@ -61,7 +54,7 @@ void myPlane::updatePheromons(const vector<int>& path, double Rho, double Q) {
 			ins = make_tuple(a, b);
 		}
 
-		mSet.insert(ins);
+		mSet.emplace_back(ins);
 		a = b;
 	}
 
@@ -71,10 +64,8 @@ void myPlane::updatePheromons(const vector<int>& path, double Rho, double Q) {
 	}
 
 	//increasing pheromones based on path
-	std::set<tuple<int, int>>::iterator it = mSet.begin();
-	while (it != mSet.end()) {
-		pheromones[*it] += Q / edgesValues[*it];
-		it++;
+	for (auto edge : mSet) {
+		pheromones[edge] += Q / edgesValues[edge];
 	}
 }
 

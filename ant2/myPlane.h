@@ -17,8 +17,6 @@ class myPlane {
 	const double BETA = 1;
 	const double ALPHA = 1;
 
-	vector<int> getAdjVal(int vertex);
-
 public:
 	int getNextVertex(int vertex, const std::set<int>& missingVert);
 
