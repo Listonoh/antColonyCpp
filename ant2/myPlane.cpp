@@ -48,8 +48,7 @@ void MyPlane::updatePheromons(const vector<int>& path, double Rho, double Q) {
 	int b, a = path[0];
 	tuple<int, int> edge;
 	//increasing pheromones based on path
-	for (size_t i = 1; i < path.size(); i++)
-	{
+	for (size_t i = 1; i < path.size(); i++) {
 		b = path[i];
 		if (a > b) {
 			edge = make_tuple(b, a);
@@ -64,25 +63,21 @@ void MyPlane::updatePheromons(const vector<int>& path, double Rho, double Q) {
 }
 
 void MyPlane::insEdge(int from, int to, int value) {
-	if (bMap[from] == 0)
-	{
+	if (bMap[from] == 0) {
 		bMap[from] = static_cast<int>(bMap.size());
 	};
 
-	if (bMap[to] == 0)
-	{
+	if (bMap[to] == 0) {
 		bMap[to] = static_cast<int>(bMap.size());
 	};
 	auto nFrom = bMap[from]-1;//because we start at 0->1 and we want 0->0 this is only here and have no impact later
 	auto nTo = bMap[to]-1;
 
 	if (nFrom != nTo) {
-		if (edges.size() <= nFrom)
-		{
+		if (edges.size() <= nFrom) {
 			edges.emplace_back(vector<tuple<int, int>>());
 		}
-		if (edges.size() <= nTo)
-		{
+		if (edges.size() <= nTo){
 			edges.emplace_back(vector<tuple<int, int>>());
 		}
 
@@ -102,8 +97,7 @@ void MyPlane::insEdge(int from, int to, int value) {
 
 //write all
 void MyPlane::WA() {
-	for (size_t i = 0; i < edges.size(); i++)
-	{
+	for (size_t i = 0; i < edges.size(); i++) {
 		std::cout << i << ":  ";
 		for (auto const& point : edges[i]) {
 			cout << "to: " << std::get<0>(point) << ", val :" << std::get<1>(point) << " | ";
@@ -160,8 +154,7 @@ int MyPlane::getNextVertex(int vertex, const set<int>& missingVert) {
 	double upperBound = sigma;
 	double aRandomDouble = (upperBound) * (static_cast<double>(rand()) / RAND_MAX);
 
-	for (int j = 0; j < nPosib; j++)
-	{
+	for (int j = 0; j < nPosib; j++) {
 		aRandomDouble -= prob[j];
 		if (aRandomDouble <= 0) {
 			return trgVert[j];
@@ -174,8 +167,7 @@ int MyPlane::getNextVertex(int vertex, const set<int>& missingVert) {
 
 set<int> MyPlane::getVertexes() {
 	set<int> ret;
-	for (int i = 0; i < edges.size(); i++)
-	{
+	for (int i = 0; i < edges.size(); i++) {
 		ret.insert(i);
 	}
 	return ret;
