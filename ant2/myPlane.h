@@ -9,30 +9,30 @@
 using namespace std;
 
 class MyPlane {
-	map<int, int> bMap;
+	map<int, int> b_map;
 	vector<vector<tuple<int, int>>> edges; //from , <to , value>
-	map<tuple<int, int>, int> edgesValues;
+	map<tuple<int, int>, int> edges_values;
 	map<tuple<int, int>, double> pheromones;
 	std::default_random_engine re;
-	const double BETA = 1;
-	const double ALPHA = 1;
+	const double beta = 1;
+	const double alpha = 1;
 
 public:
-	int getNextVertex(int vertex, const std::vector<int>& missingVert);
+	int getNextVertex(int vertex, const std::vector<int>& missing_vertex);
 
-	void updatePheromons(const std::vector<int>& path, double Ro, double Q);
+	void updatePheromones(const std::vector<int>& path, double ro, double Q);
 
-	MyPlane(double Alpha, double Beta);
+	MyPlane(double alpha, double beta);
 
 	int getValue(int from, int to);
 
-	double getPheromons(int from, int to);
+	double getPheromones(int from, int to);
 
-	void setPheromons(int from, int to, double value);
+	void setPheromones(int from, int to, double value);
 
 	void insEdge(int from, int to, int value);
 
 	void WA();
 
-	vector<int> getVertexes();
+	vector<int> getVertexes() const;
 };

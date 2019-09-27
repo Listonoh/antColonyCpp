@@ -2,76 +2,72 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <map>
-#include <set>
-#include <memory>
-#include <cmath>
 #include <random>
 #include <ctime>
-#include <climits>
-#include <new>
-#include "myPlane.h"
-#include "ant.h"
+#include "MyPlane.h"
+#include "Ant.h"
 #include "myPath.h"
 #include <windows.h>
 #include <experimental/filesystem>
 
 using namespace std;
 
-bool isOptimal(int value, int iteration, int max_iteration, int &mValue, int &mCounter) {
-	if (iteration > max_iteration){ //check if it doesn't exceed maximal iterations
+bool is_optimal(const int value, const int iteration, const int max_iteration, int& m_value, int& m_counter) {
+	if (iteration > max_iteration) {
+		//check if it doesn't exceed maximal iterations
 		return true;
 	}
 
-	if (mValue == -1) { //if there is no optimal Value just take current
-		mValue = value;
+	if (m_value == -1) {
+		//if there is no optimal Value just take current
+		m_value = value;
 		return false;
 	}
 
-	if (mValue < value) {
-		mCounter = 0;
-		mValue = value;
+	if (m_value < value) {
+		m_counter = 0;
+		m_value = value;
 		return false;
 	}
 
-	mCounter++;
-	if (mCounter >= 2) {
+	m_counter++;
+	if (m_counter >= 2) {
 		return true;
 	}
 	return false;
 }
 
-MyPath AntColonyTSP(MyPlane& plan, int max_iteration, double rho, double Q, int n = 20) {
-	auto ant1 = Ant(plan);
-	auto bestResult = ant1.findPath();
-	int iteration = 0;
-	int mValue = -1;
-	int mCounter = 0;
+MyPath ant_colony_tsp(MyPlane& plan, int max_iteration, double rho, double Q, int n = 20) {
+	const auto ant1 = Ant(plan);
+	auto best_result = ant1.findPath();
+	auto iteration = 0;
+	auto m_value = -1;
+	auto m_counter = 0;
 
-	while (!isOptimal(bestResult.Value, iteration, max_iteration, mValue, mCounter)) {
+	while (!is_optimal(best_result.value, iteration, max_iteration, m_value, m_counter)) {
 		iteration++;
 		cout << "*";
-		for (int i = 0; i < n; i++) {
-			auto result = ant1.findPath();
+		for (auto i = 0; i < n; i++) {
+			const auto result = ant1.findPath();
 			cout << "-";
-			if (result.Value <= bestResult.Value) bestResult = result;
+			if (result.value <= best_result.value) best_result = result;
 		}
-		plan.updatePheromons(bestResult.Vertexes, rho, Q);
+		plan.updatePheromones(best_result.vertexes, rho, Q);
 	}
-	return bestResult;
+	return best_result;
 }
 
-double TryParseStringToDouble(const string input, const double base, const string arg_name) {
-	try{
+double try_parse_string_to_double(const string& input, const double base, const string& arg_name) {
+	try {
 		return stod(input);
 	}
-	catch (const std::exception&){
+	catch (const std::exception&) {
 		cout << "neplatna hodnota argumentu: " << arg_name << "hodnota" << input << "\n";
 	}
 	return base;
 }
 
-int TryParseStringToInt(const string input, const int base, string arg_name) {
+int try_parse_string_to_int(const string& input, const int base, const string& arg_name) {
 	try {
 		return stoi(input);
 	}
@@ -82,7 +78,7 @@ int TryParseStringToInt(const string input, const int base, string arg_name) {
 }
 
 int main(int argc, char* argv[]) {
-	std::srand(static_cast<int>(std::time(nullptr))); // new random
+	srand(static_cast<int>(std::time(nullptr))); // new random
 
 	if (argc < 2) {
 		cout << "usage: please write input file \n"
@@ -93,42 +89,41 @@ int main(int argc, char* argv[]) {
 	// main variables for algorithm
 	double alpha = 1;
 	double beta = 1;
-	double rho = 0.01;
+	auto rho = 0.01;
 	double Q = 2;
-	int max = 100;
+	auto max = 100;
 	//
 
-	int index = 2;
-	while (index + 1 < argc)
-	{
-		string argName = argv[index];
-		string argValue = argv[index + 1];
+	auto index = 2;
+	while (index + 1 < argc) {
+		string arg_name = argv[index];
+		string arg_value = argv[index + 1];
 		index += 2;
-		if (argName == "--alpha") {
-			alpha = TryParseStringToDouble(argValue, alpha, argName);
+		if (arg_name == "--alpha") {
+			alpha = try_parse_string_to_double(arg_value, alpha, arg_name);
 		}
-		else if (argName == "--beta") {
-			beta = TryParseStringToDouble(argValue, beta, argName);
+		else if (arg_name == "--beta") {
+			beta = try_parse_string_to_double(arg_value, beta, arg_name);
 		}
-		else if (argName == "--rho") {
-			rho = TryParseStringToDouble(argValue, rho, argName);
+		else if (arg_name == "--rho") {
+			rho = try_parse_string_to_double(arg_value, rho, arg_name);
 		}
-		else if (argName == "--Q") {
-			Q = TryParseStringToDouble(argValue, Q, argName);
+		else if (arg_name == "--Q") {
+			Q = try_parse_string_to_double(arg_value, Q, arg_name);
 		}
-		else if (argName == "--max") {
-			max = TryParseStringToInt(argValue, max, argName);
+		else if (arg_name == "--max") {
+			max = try_parse_string_to_int(arg_value, max, arg_name);
 		}
-		else{
-			cout << "Neplatny argument: " << argName << "\n";
+		else {
+			cout << "Neplatny argument: " << arg_name << "\n";
 		};
 	}
 
 	string file = argv[1];
 
-	ifstream inpu(file);
+	ifstream input(file);
 
-	if (!inpu){
+	if (!input) {
 		cout << "Unable to open file: " << file;
 		return 1;
 	}
@@ -137,19 +132,19 @@ int main(int argc, char* argv[]) {
 
 	int from, to, value;
 
-	while (inpu >> from >> to >> value) {
+	while (input >> from >> to >> value) {
 		mp.insEdge(from, to, value);
 	}
 
 	cout << "Presolving \n";
-	auto tK = AntColonyTSP(mp, max, rho, Q);
+	auto tK = ant_colony_tsp(mp, max, rho, Q);
 	cout << "Aftersolving \n";
-	auto k = tK.Vertexes;
+	auto k = tK.vertexes;
 
 	cout << "final size: " << k.size() << "\n";
-	cout << "final value: " << tK.Value << "\n";
-	for (size_t i = 0; i < k.size(); i++) {
-		cout << k[i] << " ";
+	cout << "final value: " << tK.value << "\n";
+	for (auto i : k) {
+		cout << i << " ";
 	}
 	cout << "\n";
 
