@@ -84,7 +84,7 @@ int TryParseStringToInt(const string input, const int base, string arg_name) {
 int main(int argc, char* argv[]) {
 	std::srand(static_cast<int>(std::time(nullptr))); // new random
 
-	if (argc < 0) {
+	if (argc < 2) {
 		cout << "usage: please write input file \n"
 			<< "example: '" << argv[0] << "' a.in" << "\n";
 		return 1;
@@ -124,8 +124,8 @@ int main(int argc, char* argv[]) {
 		};
 	}
 
-	//string file = argv[1];
-	string file = "facebook.in";
+	string file = argv[1];
+
 	ifstream inpu(file);
 
 	if (!inpu){

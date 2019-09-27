@@ -25,7 +25,10 @@ MyPath Ant::findPath() {
 
 		int nextVertex = pl.getNextVertex(location, missingVertexes);
 		value += pl.getValue(location, nextVertex);
-		missingVertexes.erase(std::find(missingVertexes.begin(), missingVertexes.end(), nextVertex));
+		auto earser = std::find(missingVertexes.begin(), missingVertexes.end(), nextVertex);
+		if (earser != missingVertexes.end()) {
+			missingVertexes.erase(earser);
+		};
 		path.emplace_back(nextVertex);
 		location = nextVertex;
 	}

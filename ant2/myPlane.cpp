@@ -120,7 +120,7 @@ int MyPlane::getNextVertex(int vertex, const vector<int>& missingVert) {
 		auto value = std::get<1>(item);
 		//if is not in missing then skip him
 
-		if (std::binary_search(missingVert.begin(), missingVert.end(), to)) {
+		if (!std::binary_search(missingVert.begin(), missingVert.end(), to)) {
 			nPosib--;
 			continue;
 		}
