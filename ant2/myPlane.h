@@ -19,7 +19,7 @@ class MyPlane {
 public:
 	int getNextVertex(int vertex, const std::vector<int>& missing_vertex);
 
-	void updatePheromones(const std::vector<int>& path, double ro, double Q);
+	void updatePheromones(const std::vector<int>& path, double Rho, double Q);
 
 	MyPlane(double alpha, double beta);
 	static long long int getKey(int from, int to);
