@@ -5,7 +5,13 @@
 #include <algorithm>
 
 MyPlane::MyPlane(const double alpha, const double beta) : beta{beta}, alpha{alpha} {
-	edges = vector<vector<tuple<int, int>>>();
+}
+
+long long int MyPlane::getKey(const int from, const int to) {
+	long long int key = from;
+	key += 2 ^ 16;
+	key += to;
+	return key;
 }
 
 int MyPlane::getValue(int from, int to) {
@@ -14,7 +20,7 @@ int MyPlane::getValue(int from, int to) {
 		to = from;
 		from = temp;
 	}
-	return edges_values[make_tuple(from, to)];
+	return edges_values[getKey(from, to)];
 }
 
 double MyPlane::getPheromones(int from, int to) {
@@ -23,7 +29,7 @@ double MyPlane::getPheromones(int from, int to) {
 		to = from;
 		from = temp;
 	}
-	return pheromones[make_tuple(from, to)];
+	return pheromones[getKey(from, to)];
 }
 
 void MyPlane::setPheromones(int from, int to, const double value) {
@@ -32,7 +38,7 @@ void MyPlane::setPheromones(int from, int to, const double value) {
 		to = from;
 		from = temp;
 	}
-	pheromones[make_tuple(from, to)] = value;
+	pheromones[getKey(from, to)] = value;
 }
 
 void MyPlane::updatePheromones(const vector<int>& path, const double Rho, const double Q) {
@@ -46,15 +52,15 @@ void MyPlane::updatePheromones(const vector<int>& path, const double Rho, const 
 	}
 
 	auto a = path[0];
-	tuple<int, int> edge;
+	long long int edge;
 	//increasing pheromones based on path
 	for (size_t i = 1; i < path.size(); i++) {
 		auto b = path[i];
 		if (a > b) {
-			edge = make_tuple(b, a);
+			edge = getKey(b, a);
 		}
 		else {
-			edge = make_tuple(a, b);
+			edge = getKey(a, b);
 		}
 
 		pheromones[edge] += Q / edges_values[edge];
@@ -62,7 +68,7 @@ void MyPlane::updatePheromones(const vector<int>& path, const double Rho, const 
 	}
 }
 
-void MyPlane::insEdge(int from, int to, int value) {
+void MyPlane::insEdge(const int from, const int to, int value) {
 	if (b_map[from] == 0) {
 		b_map[from] = static_cast<int>(b_map.size());
 	};
@@ -90,8 +96,8 @@ void MyPlane::insEdge(int from, int to, int value) {
 			n_to = temp;
 		};
 
-		edges_values[make_tuple(n_from, n_to)] = value; // from < to
-		pheromones[make_tuple(n_from, n_to)] = 1;
+		edges_values[getKey(n_from, n_to)] = value; // from < to
+		pheromones[getKey(n_from, n_to)] = 1;
 	}
 }
 
@@ -169,7 +175,7 @@ int MyPlane::getNextVertex(int vertex, const vector<int>& missing_vertex) {
 vector<int> MyPlane::getVertexes() const {
 	vector<int> ret;
 	ret.reserve(edges.size());
-	for (int i = 0; i < edges.size(); i++) {
+	for (auto i = 0; i < edges.size(); i++) {
 		ret.emplace_back(i);
 	}
 	return ret;

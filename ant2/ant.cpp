@@ -1,5 +1,5 @@
 #include "Ant.h"
-#include "myPath.h"
+#include "MyPath.h"
 
 //cant be const because i modify it
 Ant::Ant(MyPlane& plan) : pl(plan) {
