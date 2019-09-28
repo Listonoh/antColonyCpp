@@ -28,7 +28,7 @@ MyPath Ant::findPath() const {
 		auto eraser = std::find(missing_vertexes.begin(), missing_vertexes.end(), next_vertex);
 		if (eraser != missing_vertexes.end()) {
 			missing_vertexes.erase(eraser);
-		};
+		}
 		path.emplace_back(next_vertex);
 		location = next_vertex;
 	}
@@ -46,7 +46,5 @@ MyPath Ant::findPath() const {
 	if (timer < max) {
 		return MyPath{value, path};
 	}
-	else {
-		return MyPath{std::numeric_limits<int>::max(), vector<int>{1}};
-	}
+	return MyPath{std::numeric_limits<int>::max(), vector<int>{1}};
 }

@@ -48,7 +48,7 @@ void MyPlane::updatePheromones(const vector<int>& path, const double Rho, const 
 	//evaporating of pheromones
 	for (auto& item : pheromones) {
 		//for c11
-		item.second *= (1 - Rho);
+		item.second *= 1 - Rho;
 	}
 
 	auto from = path[0];
@@ -71,11 +71,11 @@ void MyPlane::updatePheromones(const vector<int>& path, const double Rho, const 
 void MyPlane::insEdge(const int from, const int to, int value) {
 	if (b_map[from] == 0) {
 		b_map[from] = static_cast<int>(b_map.size());
-	};
+	}
 
 	if (b_map[to] == 0) {
 		b_map[to] = static_cast<int>(b_map.size());
-	};
+	}
 	auto n_from = b_map[from] - 1; //because we start at 0->1 and we want 0->0 this is only here and have no impact later
 	auto n_to = b_map[to] - 1;
 
@@ -94,7 +94,7 @@ void MyPlane::insEdge(const int from, const int to, int value) {
 			const auto temp = n_from;
 			n_from = n_to;
 			n_to = temp;
-		};
+		}
 
 		edges_values[getKey(n_from, n_to)] = value; // from < to
 		pheromones[getKey(n_from, n_to)] = 1;
@@ -114,11 +114,11 @@ void MyPlane::WA() {
 
 
 int MyPlane::getNextVertex(int vertex, const vector<int>& missing_vertex) {
-	int n_possible = static_cast<int>(edges[vertex].size());
+	auto n_possible = static_cast<int>(edges[vertex].size());
 	vector<int> trg_vertex(n_possible);
 	vector<double> prob(n_possible);
 	double sigma = 0; //all probabilities at start 0
-	int i = 0; //counter
+	auto i = 0; //counter
 
 	//initial search for possible edges
 	for (auto const& item : edges[vertex]) {
@@ -159,13 +159,13 @@ int MyPlane::getNextVertex(int vertex, const vector<int>& missing_vertex) {
 	}
 
 	const auto upper_bound = sigma;
-	auto a_random_double = (upper_bound) * (static_cast<double>(rand()) / RAND_MAX);
+	auto a_random_double = upper_bound * (static_cast<double>(rand()) / RAND_MAX);
 
 	for (auto j = 0; j < n_possible; j++) {
 		a_random_double -= prob[j];
 		if (a_random_double <= 0) {
 			return trg_vertex[j];
-		};
+		}
 	}
 
 	return get<0>(edges[vertex][0]);

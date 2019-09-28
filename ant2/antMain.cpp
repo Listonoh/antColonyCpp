@@ -116,7 +116,7 @@ int main(int argc, char* argv[]) {
 		}
 		else {
 			cout << "Neplatny argument: " << arg_name << "\n";
-		};
+		}
 	}
 
 	string file = argv[1];
@@ -137,13 +137,13 @@ int main(int argc, char* argv[]) {
 	}
 
 	cout << "Before solving \n";
-	auto tK = ant_colony_tsp(mp, max, rho, Q);
+	auto best_solution = ant_colony_tsp(mp, max, rho, Q);
 	cout << "\nAfter solving \n";
-	auto k = tK.vertexes;
+	auto best_path = best_solution.vertexes;
 
-	cout << "final size: " << k.size() << "\n";
-	cout << "final value: " << tK.value << "\n";
-	for (auto i : k) {
+	cout << "final size: " << best_path.size() << "\n";
+	cout << "final value: " << best_solution.value << "\n";
+	for (auto i : best_path) {
 		cout << i << " ";
 	}
 	cout << "\n";
