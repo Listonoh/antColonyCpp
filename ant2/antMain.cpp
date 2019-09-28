@@ -6,7 +6,7 @@
 #include <ctime>
 #include "MyPlane.h"
 #include "Ant.h"
-#include "myPath.h"
+#include "MyPath.h"
 #include <windows.h>
 #include <experimental/filesystem>
 
@@ -136,9 +136,9 @@ int main(int argc, char* argv[]) {
 		mp.insEdge(from, to, value);
 	}
 
-	cout << "Presolving \n";
+	cout << "Before solving \n";
 	auto tK = ant_colony_tsp(mp, max, rho, Q);
-	cout << "Aftersolving \n";
+	cout << "\nAfter solving \n";
 	auto k = tK.vertexes;
 
 	cout << "final size: " << k.size() << "\n";

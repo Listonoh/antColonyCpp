@@ -51,20 +51,20 @@ void MyPlane::updatePheromones(const vector<int>& path, const double Rho, const 
 		item.second *= (1 - Rho);
 	}
 
-	auto a = path[0];
+	auto from = path[0];
 	long long int edge;
 	//increasing pheromones based on path
 	for (size_t i = 1; i < path.size(); i++) {
-		auto b = path[i];
-		if (a > b) {
-			edge = getKey(b, a);
+		const auto to = path[i];
+		if (from > to) {
+			edge = getKey(to, from);
 		}
 		else {
-			edge = getKey(a, b);
+			edge = getKey(from, to);
 		}
 
 		pheromones[edge] += Q / edges_values[edge];
-		a = b;
+		from = to;
 	}
 }
 
