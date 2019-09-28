@@ -37,7 +37,7 @@ bool is_optimal(const int value, const int iteration, const int max_iteration, i
 	return false;
 }
 
-MyPath ant_colony_tsp(MyPlane& plan, int max_iteration, double rho, double Q, int n = 20) {
+MyPath ant_colony_tsp(MyPlane& plan, const int max_iteration, const double rho, const double Q, const int n = 20) {
 	const auto ant1 = Ant(plan);
 	auto best_result = ant1.findPath();
 	auto iteration = 0;
