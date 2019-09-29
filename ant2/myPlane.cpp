@@ -9,7 +9,7 @@ MyPlane::MyPlane(const double alpha, const double beta) : beta{beta}, alpha{alph
 
 long long int MyPlane::getKey(const int from, const int to) {
 	long long int key = from;
-	key += 2 ^ 16;
+	key += 2 ^ 32;
 	key += to;
 	return key;
 }
