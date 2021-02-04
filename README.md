@@ -25,15 +25,15 @@ final value: 43
 
 ## pseudocode (for my solution)
 ``` python
- # mp - is loaded map with initialized edges, vertexes and pheromones
- # n - number of ants
+# mp - is loaded map with initialized edges, vertexes and pheromones
+# n - number of ants
 solution AntColonyTSP(mp, n): 
     while(! Optimal):
-		for each ant:
-			generateSolutions()
-			compareIfBest()
-		pheromoneUpdateFromTheBest()
-	return BestSolution
+        for each ant:
+            generateSolutions()
+            compareIfBest()
+        pheromoneUpdateFromTheBest()
+    return BestSolution
 ```
 
 ## What it is about (source en wiki) 
